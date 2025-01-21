@@ -121,15 +121,28 @@ useEffect(()=>{
        {/* <button className="font-bold text-xl lg:text-heading-4 text-dark mb-2.5" onClick={handleAddItem() }/> */}
        
           {/* <!-- promo banner small --> */}
-        
+        {/* 
+      <Swiper
+      spaceBetween={30}
+      centeredSlides={true}
+      autoplay={{
+        delay: 2500,
+        disableOnInteraction: false,
+      }}
+      pagination={{
+        clickable: true,
+      }}
+      modules={[Autoplay, Pagination]}
+      className="hero-carousel"
+    > */}
           <div className="relative z-1 overflow-hidden rounded-lg bg-[#DBF4F3] py-10 xl:py-16 px-4 sm:px-7.5 xl:px-10">
-            <Image
+            {/* <Image
               // src={`http://103.41.112.95:3000/images/${data[0]?."image"}`}
               alt="promo img"
               className="absolute top-1/2 -translate-y-1/2 left-3 sm:left-10 -z-1"
               width={241}
               height={241}
-            />
+            /> */}
 
             <div className="text-right">
               <span className="block text-lg text-dark mb-1.5">

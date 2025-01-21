@@ -93,12 +93,12 @@ const [error, setError] = useState<string | null>(null);
             console.log(a,'a'),
             
           <div>
-            <Image
+            {/* <Image
               src={`http://103.41.112.95:3000/images/${a.image}`}
               alt="headphone"
               width={351}
               height={358}
-            />
+            /> */}
           </div>
           ))};
         </div>

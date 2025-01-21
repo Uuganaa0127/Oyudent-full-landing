@@ -11,9 +11,15 @@ import Image from "next/image";
 
 const HeroCarousal = () => {
 
-  const [data, setData] = useState<String[]>([]); 
+  const [data, setData] = useState<ApiResponseItem[]>([]); 
   const [loading, setLoading] = useState<boolean>(true);
 const [error, setError] = useState<string | null>(null);
+
+
+interface ApiResponseItem {
+  image: string; // Define the expected properties from the API
+}
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,15 +28,13 @@ const [error, setError] = useState<string | null>(null);
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
-        // const result: ApiResponse = await response.json();
-        const data1: String[] = await response.json();
+        await response.json();
+        const data1: ApiResponseItem[] = await response.json();
   
         console.log(data1);
         
         setData(data1);
-        // setNewItem(data1?.data);
-        // console.log(newItem);
-        console.log(data,'11');
+
         
       } catch (err) {
         setError((err as Error).message);
@@ -87,12 +91,14 @@ const [error, setError] = useState<string | null>(null);
               Shop Now
             </a>
           </div>
-          {data.map(a=>(
+          {data.map((a,index)=>(
+            
             console.log(a,'a'),
             
-          <div>
+            <div key={index}>
             <Image
-              src={`http://103.41.112.95:3000/images/${a.image}`}
+        //  src={`http://103.41.112.95:3000/images/${a.image}`}
+         src={`http://103.41.112.95:3000/images/${a.image ?? 'default.jpg'}`}
               alt="headphone"
               width={351}
               height={358}

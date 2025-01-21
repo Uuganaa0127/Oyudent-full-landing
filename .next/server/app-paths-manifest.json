@@ -1,7 +1,3 @@
 {
-  "/(site)/(pages)/shop-with-sidebar/page": "app/(site)/(pages)/shop-with-sidebar/page.js",
-  "/(site)/(pages)/contact/page": "app/(site)/(pages)/contact/page.js",
-  "/(site)/blogs/blog-grid/page": "app/(site)/blogs/blog-grid/page.js",
-  "/(site)/blogs/blog-details-with-sidebar/page": "app/(site)/blogs/blog-details-with-sidebar/page.js",
   "/(site)/page": "app/(site)/page.js"
 }
