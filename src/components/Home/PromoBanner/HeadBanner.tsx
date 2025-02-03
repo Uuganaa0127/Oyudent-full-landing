@@ -13,7 +13,10 @@ const HeadBanner = () => {
 
   const [data, setData] = useState<String[]>([]); 
   const [loading, setLoading] = useState<boolean>(true);
-const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [blogData,setBlogData] = useState<string | null>(null);
+
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,6 +34,32 @@ const [error, setError] = useState<string | null>(null);
         // setNewItem(data1?.data);
         // console.log(newItem);
         console.log(data,'11');
+        
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoading(false);
+  
+      }
+      
+    };
+    const fetchBlog= async () => {
+      try {
+        const response = await fetch('http://103.41.112.95:3000/v1/blog');
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        // const result: ApiResponse = await response.json();
+        const data1: String[] = await response.json();
+  
+        console.log(data1);
+        setBlogData(data1);
+
+        
+        // setData(data1);
+        // setNewItem(data1?.data);
+        // console.log(newItem);
+        // console.log(data,'11');
         
       } catch (err) {
         setError((err as Error).message);

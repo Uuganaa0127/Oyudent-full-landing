@@ -7,6 +7,12 @@ export const menuData: Menu[] = [
     newTab: false,
     path: "/",
   },
+  {
+    id: 2,
+    title: "admin",
+    newTab: false,
+    path: "/admin-blog",
+  },
   // {
   //   id: 2,
   //   title: "Shop",
@@ -18,6 +24,18 @@ export const menuData: Menu[] = [
     title: "Contact",
     newTab: false,
     path: "/contact",
+  },
+  {
+    id: 4,
+    title: "News",
+    newTab: false,
+    path: "/news",
+  },
+  {
+    id: 5,
+    title: "Hr-time",
+    newTab: false,
+    path: "/hrTime",
   },
   // {
   //   id: 6,
