@@ -7,12 +7,12 @@ export const menuData: Menu[] = [
     newTab: false,
     path: "/",
   },
-  {
-    id: 2,
-    title: "admin",
-    newTab: false,
-    path: "/admin-blog",
-  },
+  // {
+  //   id: 2,
+  //   title: "admin",
+  //   newTab: false,
+  //   path: "/admin-blog",
+  // },
   // {
   //   id: 2,
   //   title: "Shop",
@@ -21,22 +21,22 @@ export const menuData: Menu[] = [
   // },
   {
     id: 3,
-    title: "Contact",
+    title: "Бидний тухай",
     newTab: false,
     path: "/contact",
   },
-  {
-    id: 4,
-    title: "News",
-    newTab: false,
-    path: "/news",
-  },
-  {
-    id: 5,
-    title: "Hr-time",
-    newTab: false,
-    path: "/hrTime",
-  },
+  // {
+  //   id: 4,
+  //   title: "News",
+  //   newTab: false,
+  //   path: "/news",
+  // },
+  // {
+  //   id: 5,
+  //   title: "Hr-time",
+  //   newTab: false,
+  //   path: "/hrTime",
+  // },
   // {
   //   id: 6,
   //   title: "pages",
@@ -113,25 +113,25 @@ export const menuData: Menu[] = [
   // },
   {
     id: 7,
-    title: "blogs",
+    title: "Мэдээ",
     newTab: false,
     path: "/",
     submenu: [
       {
         id: 71,
-        title: "Blog Grid with sidebar",
+        title: "Сургалт",
         newTab: false,
         path: "/blogs/blog-grid-with-sidebar",
       },
       {
         id: 72,
-        title: "Blog Grid",
+        title: "Мэдээ",
         newTab: false,
         path: "/blogs/blog-grid",
       },
       {
         id: 73,
-        title: "Blog details with sidebar",
+        title: "Слиник кеси",
         newTab: false,
         path: "/blogs/blog-details-with-sidebar",
       },
@@ -139,7 +139,7 @@ export const menuData: Menu[] = [
         id: 74,
         title: "Blog details",
         newTab: false,
-        path: "/blogs/blog-details",
+        path: "/blogs/blog-details/",
       },
     ],
   },

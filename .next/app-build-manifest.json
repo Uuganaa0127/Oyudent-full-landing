@@ -1,9 +1,10 @@
 {
   "pages": {
-    "/(site)/(pages)/contact/page": [
+    "/(site)/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(site)/(pages)/contact/page.js"
+      "static/css/app/(site)/page.css",
+      "static/chunks/app/(site)/page.js"
     ],
     "/(site)/layout": [
       "static/chunks/webpack.js",
@@ -11,40 +12,11 @@
       "static/css/app/(site)/layout.css",
       "static/chunks/app/(site)/layout.js"
     ],
-    "/(site)/(pages)/admin-blog/page": [
+    "/(site)/(pages)/my-account/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/(site)/(pages)/admin-blog/page.css",
-      "static/chunks/app/(site)/(pages)/admin-blog/page.js"
-    ],
-    "/(site)/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(site)/page.css",
-      "static/chunks/app/(site)/page.js"
-    ],
-    "/(site)/(pages)/hrTime/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(site)/(pages)/hrTime/page.css",
-      "static/chunks/app/(site)/(pages)/hrTime/page.js"
-    ],
-    "/(site)/(pages)/news/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(site)/(pages)/news/page.css",
-      "static/chunks/app/(site)/(pages)/news/page.js"
-    ],
-    "/(site)/(pages)/newsCreate/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/(site)/(pages)/newsCreate/page.css",
-      "static/chunks/app/(site)/(pages)/newsCreate/page.js"
-    ],
-    "/(site)/(pages)/signin/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(site)/(pages)/signin/page.js"
+      "static/css/app/(site)/(pages)/my-account/page.css",
+      "static/chunks/app/(site)/(pages)/my-account/page.js"
     ],
     "/_not-found/page": [
       "static/chunks/webpack.js",

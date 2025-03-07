@@ -7,6 +7,8 @@ import BestSeller from "./BestSeller";
 import CounDown from "./Countdown";
 import Testimonials from "./Testimonials";
 import Newsletter from "../Common/Newsletter";
+import BrandsCoursel from "../BrandsCoursel"
+import AutoCoursel from '../AutoCoursel'
 
 const Home = () => {
   return (
@@ -14,15 +16,15 @@ const Home = () => {
       <PromoBanner />
 
       {/* <CounDown /> */}
+      <AutoCoursel/>
 
-      
       <Hero />
-
+      {/* <BrandsCoursel/> */}
       {/* <Categories /> */}
-      <NewArrival />
+      {/* <NewArrival /> */}
       {/* <BestSeller /> */}
-      <Testimonials />
-      <Newsletter />
+      {/* <Testimonials /> */}
+      {/* <Newsletter /> */}
     </main>
   );
 };

@@ -1,181 +1,103 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 // Import Swiper styles
-import "swiper/css/pagination";
 import "swiper/css";
-
-import Image from "next/image";
+import "swiper/css/pagination";
 
 const HeadBanner = () => {
-
-  const [data, setData] = useState<String[]>([]); 
+  const [data, setData] = useState<
+    { title: string; image: string; description: string; buttonText?: string; buttonLink?: string }[]
+  >([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [blogData,setBlogData] = useState<string | null>(null);
-
-  
+  const [hasButton, setHasButton] = useState<boolean>(false); // ✅ Check if any slide has a button
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://103.41.112.95:3000/v1/banner');
+        const response = await fetch("http://103.41.112.95:3000/v1/banner");
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
-        // const result: ApiResponse = await response.json();
-        const data1: String[] = await response.json();
-  
-        console.log(data1);
-        
-        setData(data1);
-        // setNewItem(data1?.data);
-        // console.log(newItem);
-        console.log(data,'11');
-        
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setLoading(false);
-  
-      }
-      
-    };
-    const fetchBlog= async () => {
-      try {
-        const response = await fetch('http://103.41.112.95:3000/v1/blog');
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-        // const result: ApiResponse = await response.json();
-        const data1: String[] = await response.json();
-  
-        console.log(data1);
-        setBlogData(data1);
+        const result = await response.json();
+        setData(result);
 
-        
-        // setData(data1);
-        // setNewItem(data1?.data);
-        // console.log(newItem);
-        // console.log(data,'11');
-        
+        // ✅ Check if any slide has a button
+        setHasButton(result.some((item) => item.buttonText && item.buttonLink));
       } catch (err) {
         setError((err as Error).message);
       } finally {
         setLoading(false);
-  
       }
-      
     };
-    fetchData(); 
-  },[]);
-  
+
+    fetchData();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
   return (
-    <div className="relative z-1 overflow-hidden rounded-lg bg-[#F5F5F7] py-1.5 lg:py-1.5 xl:pt-30 xl:py-2.5 px-4 sm:px-7.5 lg:px-14 xl:px-19 mb-1">
-
-    <Swiper
-      spaceBetween={30}
-      centeredSlides={true}
-      autoplay={{
-        delay: 2500,
-        disableOnInteraction: false,
-      }}
-      pagination={{
-        clickable: true,
-      }}
-      modules={[Autoplay, Pagination]}
-      className="hero-carousel"
-    >
-      <SwiperSlide>
-        <div className="flex items-center pt-6 sm:pt-0 flex-col-reverse sm:flex-row">
-          <div className="max-w-[394px] py-10 sm:py-15 lg:py-24.5 pl-4 sm:pl-7.5 lg:pl-12.5">
-            <div className="flex items-center gap-4 mb-7.5 sm:mb-10">
-        
-              <span className="block font-semibold text-heading-3 sm:text-heading-1 text-blue">
-                30%
-              </span>
-              <span className="block text-dark text-sm sm:text-custom-1 sm:leading-[24px]">
-                Sale
-                <br />
-                Off
-              </span>
-            </div>
-
-            <h1 className="font-semibold text-dark text-xl sm:text-3xl mb-3">
-              <a href="#">True Wireless Noise Cancelling Headphone</a>
-            </h1>
-
-            <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at ipsum at risus euismod lobortis in
-            </p>
-
-            <a
-              href="#"
-              className="inline-flex font-medium text-white text-custom-sm rounded-md bg-dark py-3 px-9 ease-out duration-200 hover:bg-blue mt-10"
+    <div className="relative z-1 overflow-hidden rounded-lg bg-[#F5F5F7] py-1.5 lg:py-1.5 xl:pt-10 xl:py-2.5 px-4 sm:px-7.5 lg:px-14 xl:px-19 mb-1">
+      <Swiper
+        spaceBetween={30}
+        centeredSlides={true}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
+        pagination={{
+          clickable: true,
+        }}
+        modules={[Autoplay, Pagination]}
+        className="hero-carousel"
+      >
+        {data.map((item, index) => (
+          <SwiperSlide key={index}>
+            <div
+              className="relative flex flex-col items-center justify-center w-full h-[500px] sm:h-[600px] lg:h-[700px] bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: `url(http://103.41.112.95:3000/images/${item.image})`,
+              }}
             >
-              Shop Now
-            </a>
-          </div>
-          {data.map(a=>(
-            console.log(a,'a'),
-            
-          <div>
-            {/* <Image
-              src={`http://103.41.112.95:3000/images/${a.image}`}
-              alt="headphone"
-              width={351}
-              height={358}
-            /> */}
-          </div>
-          ))};
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        {" "}
-        
-        <div className="flex items-center pt-6 sm:pt-0 flex-col-reverse sm:flex-row">
-          <div className="max-w-[394px] py-10 sm:py-15 lg:py-26 pl-4 sm:pl-7.5 lg:pl-12.5">
-            <div className="flex items-center gap-4 mb-7.5 sm:mb-10">
-              <span className="block font-semibold text-heading-3 sm:text-heading-1 text-blue">
-                30%
-              </span>
-              <span className="block text-dark text-sm sm:text-custom-1 sm:leading-[24px]">
-                Sale
-                <br />
-                Off
-              </span>
+              {/* ✅ Overlay to improve text readability */}
+              <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+
+              <div className="relative z-10 text-center px-6 sm:px-12">
+                <h1 className="font-semibold text-white text-xl sm:text-3xl lg:text-4xl mb-3">
+                  {item.title}
+                </h1>
+                <p className="text-white text-lg sm:text-xl">{item.description}</p>
+
+                {/* ✅ Show button if available (inside the banner) */}
+                {item.buttonText && item.buttonLink && (
+                  <a
+                    href={item.buttonLink}
+                    className="inline-flex font-medium text-white text-custom-sm rounded-md bg-blue-600 py-3 px-9 ease-out duration-200 hover:bg-blue-500 mt-5"
+                  >
+                    {item.buttonText}
+                  </a>
+                )}
+              </div>
             </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
-            <h1 className="font-semibold text-dark text-xl sm:text-3xl mb-3">
-              <a href="#">True Wireless Noise Cancelling Headphone</a>
-            </h1>
-
-            <p>
-              Lorem ipsum dolor sit, consectetur elit nunc suscipit non ipsum
-              nec suscipit.
-            </p>
-
-            <a
-              href="#"
-              className="inline-flex font-medium text-white text-custom-sm rounded-md bg-dark py-3 px-9 ease-out duration-200 hover:bg-blue mt-10"
-            >
-              Shop Now
-            </a>
-          </div>
-
-          <div>
-            <Image
-              src="/images/hero/hero-01.png"
-              alt="headphone"
-              width={351}
-              height={358}
-            />
-          </div>
+      {/* ✅ If there's at least one button, render a separate button outside the image */}
+      {hasButton && (
+        <div className="mt-6 flex justify-center">
+          <a
+            href={data.find((item) => item.buttonText && item.buttonLink)?.buttonLink || "#"}
+            className="inline-flex font-medium text-black text-lg rounded-md bg-blue-600 py-3 px-9 ease-out duration-200 hover:bg-blue-500"
+          >
+            {data.find((item) => item.buttonText && item.buttonLink)?.buttonText || "Learn More"}
+          </a>
         </div>
-      </SwiperSlide>
-    </Swiper>
+      )}
     </div>
   );
 };

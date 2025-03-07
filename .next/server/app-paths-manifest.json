@@ -1,8 +1,5 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/(site)/(pages)/news/page": "app/(site)/(pages)/news/page.js",
-  "/(site)/(pages)/contact/page": "app/(site)/(pages)/contact/page.js",
-  "/(site)/(pages)/admin-blog/page": "app/(site)/(pages)/admin-blog/page.js",
-  "/(site)/(pages)/newsCreate/page": "app/(site)/(pages)/newsCreate/page.js",
-  "/(site)/(pages)/hrTime/page": "app/(site)/(pages)/hrTime/page.js"
+  "/(site)/page": "app/(site)/page.js",
+  "/(site)/(pages)/my-account/page": "app/(site)/(pages)/my-account/page.js"
 }

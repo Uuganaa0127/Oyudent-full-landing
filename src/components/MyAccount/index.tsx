@@ -1,9 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
 import Image from "next/image";
 import AddressModal from "./AddressModal";
 import Orders from "../Orders";
+import SendHrTime from "./sendTimeHr"
+import { apiRequest } from "@/utils/api"; // ✅ Import API function
 
 const MyAccount = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -17,9 +19,28 @@ const MyAccount = () => {
     setAddressModal(false);
   };
 
+
+  const getMyProfile = async ()=>{
+
+    const data = await apiRequest("user", "GET");
+    try{
+    if(data){
+      console.log('data',data);
+    }
+  } catch (err) {
+    console.error("user error:", err);
+  }
+  };
+
+
+  useEffect(() => {
+
+    getMyProfile();
+
+  },[])
   return (
     <>
-      <Breadcrumb title={"My Account"} pages={["my account"]} />
+      {/* <Breadcrumb title={"My Account"} pages={["my account"]} /> */}
 
       <section className="overflow-hidden py-20 bg-gray-2">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
@@ -153,7 +174,7 @@ const MyAccount = () => {
                           fill=""
                         />
                       </svg>
-                      Downloads
+                     Цаг Бүртгэл
                     </button>
 
                     <button
@@ -295,6 +316,7 @@ const MyAccount = () => {
                 activeTab === "downloads" ? "block" : "hidden"
               }`}
             >
+              <SendHrTime />
               <p>You don&apos;t have any download</p>
             </div>
             {/* <!-- downloads tab content end -->
