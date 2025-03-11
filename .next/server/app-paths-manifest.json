@@ -1,5 +1,7 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/(site)/page": "app/(site)/page.js",
-  "/(site)/(pages)/my-account/page": "app/(site)/(pages)/my-account/page.js"
+  "/(site)/blogs/blog-details/[id]/page": "app/(site)/blogs/blog-details/[id]/page.js",
+  "/(site)/blogs/blog-grid-with-sidebar/page": "app/(site)/blogs/blog-grid-with-sidebar/page.js",
+  "/(site)/courses/course-detail/[id]/page": "app/(site)/courses/course-detail/[id]/page.js"
 }

@@ -14,51 +14,55 @@ interface BannerItem {
 
 interface SmallBannerProps {
   banners: BannerItem[];
+  head: string;
 }
 
 const SmallBanner: React.FC<SmallBannerProps> = ({ banners, head }) => {
   return (
-    <div className="flex flex-col items-center w-full">
-      <p className="py-5 font-bold" >{head}</p>
+    <div className="w-full flex flex-col items-center py-10 bg-gradient-to-r from-teal-500 to-teal-600 rounded-lg   ">
+      <p className="text-3xl font-extrabold mb-6 text-center">{head}</p>
       <Swiper
         modules={[Autoplay, Pagination]}
-        spaceBetween={30}
+        spaceBetween={20}
         slidesPerView={1}
         autoplay={{
-          delay: 3000,
+          delay: 4000,
           disableOnInteraction: false,
         }}
-        pagination={{ clickable: true }}
-        className="rounded-lg w-full"
+        pagination={{
+          clickable: true,
+          dynamicBullets: true,
+        }}
+        className="w-full rounded-xl overflow-hidden shadow-lg"
       >
         {banners.map((item) => (
           <SwiperSlide key={item.id}>
             <div
-              className="relative overflow-hidden flex flex-col items-center justify-center text-center z-1 rounded-lg bg-[#DBF4F3] py-10 xl:py-16 px-4 sm:px-7.5 xl:px-10"
+              className="relative flex flex-col items-center justify-center text-center px-4 py-10 bg-[#DBF4F3]   rounded-lg shadow-xl hover:scale-105 transform transition-all duration-300 ease-in-out"
             >
-              <span className="block text-lg font-bold text-gray-700 mb-1.5">
-                {item.title}
-              </span>
+            
 
-              {/* ✅ Show description only if available */}
-              {item.description && (
-                <p className="text-gray-600 text-sm mb-3 bold">{item.description}</p>
-              )}
+              {/* Image */}
+              <div className="w-full max-w-[400px] mx-auto flex justify-center items-center mb-4">
+        <img
+                  style={{ width: "350px", height: "180px" }} // Fixed image size
+                  src={`http://103.41.112.95:3000/images/${item.thumbnail}`}
+                  alt={item.title}
+                  className="object-cover rounded-lg"
+                /> 
+             
+              </div>
+              <span className="block text-xl font-semibold text-teal-600 mb-3">{item.title}</span>
 
-              {/* ✅ Image */}
-              <div className="w-full max-w-[400px] mx-auto flex justify-center items-center">
-  <img
-    style={{ width: "350px", height: "180px" }} // ✅ Fixed image size
-    src={`http://103.41.112.95:3000/images/${item.thumbnail}`}
-    alt={item.title}
-    className="object-cover rounded-lg"
-  />
-</div>
+{/* Show description only if available */}
+{item.description && (
+  <p className="text-gray-700 text-sm mb-4">{item.description}</p>
+)}
 
-
+              {/* Read More Button */}
               <a
-                href={`/blogs/blog-details/${item.id}`}
-                className="inline-flex font-medium text-custom-sm text-white bg-teal py-2.5 px-8.5 rounded-md ease-out duration-200 hover:bg-teal-dark mt-5"
+          href={head==="Мэдээ" ? `/blogs/blog-details/${item.id}` : `/courses/course-details/${item.id}`} 
+                className="inline-flex font-medium text-custom-sm text-white bg-teal py-2.5 mb-3 px-8.5  rounded-md ease-out duration-200 hover:bg-teal-dark mt-5"
               >
                 Read More
               </a>

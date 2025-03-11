@@ -10,6 +10,8 @@ const AutoLogoSlider = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
+
+
   useEffect(() => {
     const fetchLogos = async () => {
       try {
@@ -31,8 +33,11 @@ const AutoLogoSlider = () => {
     fetchLogos();
   }, []);
 
+
+
+
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 mt-10 mb-10">
+    <div className="w-full max-w-4xl mx-auto px-4 my-10">
       {loading && <p>Loading logos...</p>}
       {error && <p className="text-red-500">Error: {error}</p>}
       {!loading && data && (

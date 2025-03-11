@@ -48,11 +48,11 @@ const BlogDetail = () => {
 
   return (
     <section className="max-w-[900px] mx-auto py-10 px-4">
-      <h1 className="text-3xl font-bold text-center">{blog.title}</h1>
+      <h1 className="text-3xl font-bold text-center mb-10">{blog.title}</h1>
 
-      <div className="w-full h-72 relative mt-5">
+      <div className="w-full h-72 relative mt-5 flex justify-center">
         <Image
-          // src={`http://103.41.112.95:3000/${blog.banner}`}
+          src={`http://103.41.112.95:3000/images/${blog.thumbnail}`}
           alt={blog.title}
           layout="fill"
           objectFit="cover"

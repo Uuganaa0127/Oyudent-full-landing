@@ -84,7 +84,7 @@ const filteredData = data.filter((item) => item.type === "surgalt" || item.type 
 
 
   return (
-    <section className="overflow-hidden py-20">
+    <section className="overflow-hidden pt-20">
      
       <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
     
@@ -98,8 +98,6 @@ const filteredData = data.filter((item) => item.type === "surgalt" || item.type 
 
             <SmallBanner head={'Мэдээ'} banners={data} />
             <SmallBanner head={'Сургалт'} banners={data2} />
-
-
           </div>
          {/* <SmallBanner /> */}
          {/* <SmallBanner/> */}
