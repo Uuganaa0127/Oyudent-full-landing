@@ -37,31 +37,27 @@ const SmallBanner: React.FC<SmallBannerProps> = ({ banners, head }) => {
       >
         {banners.map((item) => (
           <SwiperSlide key={item.id}>
-            <div
-              className="relative flex flex-col items-center justify-center text-center px-4 py-10 bg-[#DBF4F3]   rounded-lg shadow-xl hover:scale-105 transform transition-all duration-300 ease-in-out"
-            >
-            
-
-              {/* Image */}
+            <div className="relative flex flex-col items-center justify-center text-center px-4 py-10 bg-[#DBF4F3]   rounded-lg shadow-xl hover:scale-105 transform transition-all duration-300 ease-in-out">
               <div className="w-full max-w-[400px] mx-auto flex justify-center items-center mb-4">
-        <img
-                  style={{ width: "350px", height: "180px" }} // Fixed image size
+                <img
+                  style={{ width: "350px", height: "180px" }}
                   src={`http://103.41.112.95:3000/images/${item.thumbnail}`}
                   alt={item.title}
                   className="object-cover rounded-lg"
-                /> 
-             
+                />
               </div>
-              <span className="block text-xl font-semibold text-teal-600 mb-3">{item.title}</span>
-
-{/* Show description only if available */}
-{item.description && (
-  <p className="text-gray-700 text-sm mb-4">{item.description}</p>
-)}
-
-              {/* Read More Button */}
+              <span className="block text-xl font-semibold text-teal-600 mb-3">
+                {item.title}
+              </span>
+              {item.description && (
+                <p className="text-gray-700 text-sm mb-4">{item.description}</p>
+              )}
               <a
-          href={head==="Мэдээ" ? `/blogs/blog-details/${item.id}` : `/courses/course-details/${item.id}`} 
+                href={
+                  head === "Мэдээ"
+                    ? `/blogs/blog-details/${item.id}`
+                    : `/courses/course-detail/${item.id}`
+                }
                 className="inline-flex font-medium text-custom-sm text-white bg-teal py-2.5 mb-3 px-8.5  rounded-md ease-out duration-200 hover:bg-teal-dark mt-5"
               >
                 Read More

@@ -2,5 +2,7 @@ export type BlogItem = {
   date: string;
   views: number;
   title: string;
-  img: string;
+  thumbnail: string;
+  description: string;
+  id: string;
 };

@@ -15,6 +15,7 @@ interface Blog {
 
 const CourseDetail = () => {
   const { id } = useParams(); // ✅ Get the blog ID dynamically
+  console.log(id);
 
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -25,7 +26,9 @@ const CourseDetail = () => {
 
     const fetchBlog = async () => {
       try {
-        const response = await fetch(`http://103.41.112.95:3000/v1/course/${id}`);
+        const response = await fetch(
+          `http://103.41.112.95:3000/v1/course/${id}`
+        );
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }

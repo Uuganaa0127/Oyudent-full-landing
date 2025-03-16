@@ -10,18 +10,18 @@ const AutoLogoSlider = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-
-
   useEffect(() => {
     const fetchLogos = async () => {
       try {
-        const response = await fetch("http://103.41.112.95:3000/v1/manufacturer");
+        const response = await fetch(
+          "http://103.41.112.95:3000/v1/manufacturer"
+        );
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
         const result = await response.json();
-        console.log(result,'ss');
-        
+        console.log(result, "ss");
+
         setData(result);
       } catch (err) {
         setError((err as Error).message);
@@ -33,11 +33,11 @@ const AutoLogoSlider = () => {
     fetchLogos();
   }, []);
 
-
-
-
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 my-10">
+    <div className="w-full mx-auto  my-10">
+      <p className="text-2xl font-extrabold mb-12 text-center">
+        {"Хамтрагч байгууллагууд"}
+      </p>
       {loading && <p>Loading logos...</p>}
       {error && <p className="text-red-500">Error: {error}</p>}
       {!loading && data && (
@@ -50,13 +50,12 @@ const AutoLogoSlider = () => {
           grabCursor={true} // ✅ Allows manual swipe
           touchRatio={1.5} // ✅ Improves swipe responsiveness
           breakpoints={{
-            480: { slidesPerView: 4 },
-            768: { slidesPerView: 5 },
-            1024: { slidesPerView: 5 },
+            480: { slidesPerView: 6 },
+            768: { slidesPerView: 8 },
+            1024: { slidesPerView: 6 },
           }}
         >
           {data.map((logo, index) => (
-          
             <SwiperSlide key={index}>
               <img
                 src={`http://103.41.112.95:3000/images/${logo.logo}`}
