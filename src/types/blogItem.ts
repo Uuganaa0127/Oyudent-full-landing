@@ -3,6 +3,6 @@ export type BlogItem = {
   views: number;
   title: string;
   thumbnail: string;
-  description: string;
-  id: string;
+  description?: string;
+  id?: string;
 };

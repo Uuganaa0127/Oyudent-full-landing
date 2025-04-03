@@ -1,10 +1,10 @@
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/pagination";
+import React from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
-interface BannerItem {
+export interface BannerItem {
   id: number;
   thumbnail: string;
   title: string;
@@ -40,7 +40,7 @@ const SmallBanner: React.FC<SmallBannerProps> = ({ banners, head }) => {
             <div className="relative flex flex-col items-center justify-center text-center px-4 py-10 bg-[#DBF4F3]   rounded-lg shadow-xl hover:scale-105 transform transition-all duration-300 ease-in-out">
               <div className="w-full max-w-[400px] mx-auto flex justify-center items-center mb-4">
                 <img
-                  style={{ width: "350px", height: "180px" }}
+                  style={{ width: '350px', height: '180px' }}
                   src={`http://103.41.112.95:3000/images/${item.thumbnail}`}
                   alt={item.title}
                   className="object-cover rounded-lg"
@@ -54,7 +54,7 @@ const SmallBanner: React.FC<SmallBannerProps> = ({ banners, head }) => {
               )}
               <a
                 href={
-                  head === "Мэдээ"
+                  head === 'Мэдээ'
                     ? `/blogs/blog-details/${item.id}`
                     : `/courses/course-detail/${item.id}`
                 }

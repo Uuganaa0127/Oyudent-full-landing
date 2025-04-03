@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
-import "swiper/css";
+import { useEffect, useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
+import 'swiper/css';
 
 const AutoLogoSlider = () => {
   const [data, setData] = useState<string[] | null>(null);
@@ -14,13 +14,13 @@ const AutoLogoSlider = () => {
     const fetchLogos = async () => {
       try {
         const response = await fetch(
-          "http://103.41.112.95:3000/v1/manufacturer"
+          'http://103.41.112.95:3000/v1/manufacturer'
         );
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
         const result = await response.json();
-        console.log(result, "ss");
+        console.log(result, 'ss');
 
         setData(result);
       } catch (err) {
@@ -36,7 +36,7 @@ const AutoLogoSlider = () => {
   return (
     <div className="w-full mx-auto  my-10">
       <p className="text-2xl font-extrabold mb-12 text-center">
-        {"Хамтрагч байгууллагууд"}
+        {'Хамтрагч байгууллагууд'}
       </p>
       {loading && <p>Loading logos...</p>}
       {error && <p className="text-red-500">Error: {error}</p>}
@@ -55,7 +55,7 @@ const AutoLogoSlider = () => {
             1024: { slidesPerView: 6 },
           }}
         >
-          {data.map((logo, index) => (
+          {data.map((logo: any, index) => (
             <SwiperSlide key={index}>
               <img
                 src={`http://103.41.112.95:3000/images/${logo.logo}`}
