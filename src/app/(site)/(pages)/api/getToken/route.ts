@@ -1,23 +1,14 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { parse } from "cookie";
+import { NextApiRequest, NextApiResponse } from 'next';
+import { parse } from 'cookie';
+import { NextRequest, NextResponse } from 'next/server';
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-
-
-  if (req.method !== "GET") {
-    
-    res.setHeader("Allow", ["GET"]); // ✅ Tell browser what methods are allowed
-    console.log('dsad');
-
-    return res.status(405).json({ message: "Method Not Allowed" });
-  }
-
-  const cookies = parse(req.headers.cookie || "");
+export async function GET(req: NextRequest) {
+  const cookies = parse(req.headers.get('cookie') || '');
   const token = cookies.auth_token; // 🔥 Ensure this matches your cookie name
 
   if (!token) {
-    return res.status(401).json({ message: "No token found" });
+    return NextResponse.json({ message: 'No token found' }, { status: 401 });
   }
 
-  res.status(200).json({ token });
+  return NextResponse.json({ token }, { status: 200 });
 }

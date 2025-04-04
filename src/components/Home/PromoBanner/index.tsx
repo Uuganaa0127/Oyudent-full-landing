@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import React from "react";
-import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
-import "swiper/css/pagination";
-import "swiper/css";
-import HeadBanner from "./HeadBanner";
-import SmallBanner from "./SmallBanner";
+import React from 'react';
+import Image from 'next/image';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination } from 'swiper/modules';
+import 'swiper/css/pagination';
+import 'swiper/css';
+import HeadBanner from './HeadBanner';
+import SmallBanner, { BannerItem } from './SmallBanner';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 interface HeaderItem {
   id: number;
@@ -21,26 +21,26 @@ interface HeaderItem {
 }
 
 const PromoBanner = () => {
-  const [data, setData] = useState<HeaderItem[]>([]);
+  const [data, setData] = useState<BannerItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [newItem, setNewItem] = useState<string>("");
+  const [newItem, setNewItem] = useState<string>('');
   const [image, setimage] = useState<string[] | null>(null);
-  const [data2, setData2] = useState<HeaderItem[]>([]);
+  const [data2, setData2] = useState<BannerItem[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://103.41.112.95:3000/v1/blog?limit=10"
+          'http://103.41.112.95:3000/v1/blog?limit=10'
         );
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
 
-        const data1: HeaderItem[] = await response.json();
+        const data1: BannerItem[] = await response.json();
 
-        console.log(data1, "data1");
+        console.log(data1, 'data1');
 
         setData(data1);
       } catch (err) {
@@ -51,14 +51,14 @@ const PromoBanner = () => {
     };
     const fetchCourse = async () => {
       try {
-        const response = await fetch("http://103.41.112.95:3000/v1/course");
+        const response = await fetch('http://103.41.112.95:3000/v1/course');
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
 
-        const data1: HeaderItem[] = await response.json();
+        const data1: BannerItem[] = await response.json();
 
-        console.log(data1, "data2");
+        console.log(data1, 'data2');
 
         setData2(data1);
       } catch (err) {
@@ -76,7 +76,7 @@ const PromoBanner = () => {
     // console.log('pizda',data);
   }, [data]);
   const filteredData = data.filter(
-    (item) => item.type === "surgalt" || item.type === "news"
+    (item) => item.type === 'surgalt' || item.type === 'news'
   );
 
   return (
@@ -90,8 +90,8 @@ const PromoBanner = () => {
         <div className="grid gap-7.5 grid-cols-1 lg:grid-cols-2">
           {/* Pass the first two items from data to SmallBanner */}
 
-          <SmallBanner head={"Мэдээ"} banners={data} />
-          <SmallBanner head={"Сургалт"} banners={data2} />
+          <SmallBanner head={'Мэдээ'} banners={data} />
+          <SmallBanner head={'Сургалт'} banners={data2} />
         </div>
         {/* <SmallBanner /> */}
         {/* <SmallBanner/> */}
