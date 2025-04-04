@@ -34,7 +34,7 @@ const AutoLogoSlider = () => {
   }, []);
 
   return (
-    <div className="w-full mx-auto  my-10">
+    <div className="w-2/3 mx-auto  my-10">
       <p className="text-2xl font-extrabold mb-12 text-center">
         {"Хамтрагч байгууллагууд"}
       </p>

@@ -26,8 +26,9 @@ const Signup = () => {
 
   // ✅ Validate input fields before submission
   const validateInputs = () => {
-    const registerRegex = /^[A-Za-z]{2}\d{8}$/; // 🔥 2 letters + 8 numbers
+    const registerRegex = /^[A-Za-zА-Яа-яҮүӨө]{2}\d{8}$/;
     const phoneRegex = /^\d{8}$/; // 🔥 Exactly 8 digits
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
     if (!registerRegex.test(formData.register)) {
       return "Регистер 2 үсэг + 8 тоо байх ёстой. (Жишээ: AB12345678)";
@@ -37,6 +38,9 @@ const Signup = () => {
     }
     if (formData.password.length < 8) {
       return "Нууц үг хамгийн багадаа 8 тэмдэгт байх ёстой.";
+    }
+    if (!emailRegex.test(formData.email)) {
+      return "Имэйл хаяг зөв оруулна уу. (Жишээ: example@example.com)";
     }
     if (formData.password !== formData.passwordMatch) {
       return "Нууц үг тохирохгүй байна.";
@@ -59,6 +63,9 @@ const Signup = () => {
 
     try {
       const response = await signUpUser(formData);
+      const x = response.json();
+      console.log(x);
+
       setMessage("Бүртгэл амжилттай хийгдлээ! 🎉");
     } catch (error: any) {
       setMessage(error.message || "Бүртгэл амжилтгүй боллоо.");
@@ -90,7 +97,7 @@ const Signup = () => {
                     type="text"
                     name="lastname"
                     id="lastname"
-                    placeholder="Enter your Овог"
+                    placeholder="Овог оруулна уу"
                     value={formData.lastname}
                     onChange={handleChange}
                     required
@@ -106,7 +113,7 @@ const Signup = () => {
                     type="text"
                     name="firstname"
                     id="firstname"
-                    placeholder="Enter your Нэр"
+                    placeholder="Нэр оруулна уу"
                     value={formData.firstname}
                     onChange={handleChange}
                     required
@@ -145,6 +152,21 @@ const Signup = () => {
                     className="rounded-lg border border-gray-3 bg-gray-1 w-full py-3 px-5 outline-none duration-200 focus:ring-2 focus:ring-blue/20"
                   />
                 </div>
+                <div className="mb-5">
+                  <label htmlFor="phone" className="block mb-2.5">
+                    И-мэйл хаяг <span className="text-red">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="email"
+                    id="Email"
+                    placeholder="john.doe@gmail.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="rounded-lg border border-gray-3 bg-gray-1 w-full py-3 px-5 outline-none duration-200 focus:ring-2 focus:ring-blue/20"
+                  />
+                </div>
 
                 <div className="mb-5">
                   <label htmlFor="password" className="block mb-2.5">
@@ -178,16 +200,25 @@ const Signup = () => {
                   />
                 </div>
 
-                <button type="submit" disabled={loading} className="w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 hover:bg-blue mt-7.5">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 hover:bg-blue mt-7.5"
+                >
                   {loading ? "Бүртгэж байна..." : "Бүртгүүлэх"}
                 </button>
 
-                {message && <p className="text-center text-red-600 mt-4">{message}</p>}
+                {message && (
+                  <p className="text-center text-red-600 mt-4">{message}</p>
+                )}
 
                 <p className="text-center mt-6">
-                  Already have an account?
-                  <Link href="/signin" className="text-dark ease-out duration-200 hover:text-blue pl-2">
-                    Sign in Now
+                  Та өөрийн бүртгэлтэй юу?
+                  <Link
+                    href="/signin"
+                    className="text-dark ease-out duration-200 hover:text-blue pl-2"
+                  >
+                    Нэвтрэх
                   </Link>
                 </p>
               </form>

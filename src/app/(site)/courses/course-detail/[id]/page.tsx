@@ -15,7 +15,6 @@ interface Blog {
 
 const CourseDetail = () => {
   const { id } = useParams(); // ✅ Get the blog ID dynamically
-  console.log(id);
 
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState<boolean>(true);

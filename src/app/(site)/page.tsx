@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { jwtDecode } from "jwt-decode"; 
+import { jwtDecode } from "jwt-decode";
 import { getTokenFromCookie } from "@/utils/api"; // ✅ Use imported function
 import Home from "@/components/Home";
 
@@ -22,10 +22,10 @@ export default function HomePage() {
         // ✅ Get token from cookies
         const token = getTokenFromCookie();
         if (!token) {
-          <Home />
+          <Home />;
 
           // router.push("/signin"); // ✅ Redirect if no token
-          return 
+          return;
         }
 
         setToken(token);
@@ -37,13 +37,12 @@ export default function HomePage() {
         const currentTime = Math.floor(Date.now() / 1000);
         console.log(currentTime, "Current Time");
         console.log(decoded, "Decoded Token");
-        console.log(decoded.roles == 'admin', "Decoded");
+        console.log(decoded.roles == "admin", "Decoded");
 
         // ✅ Redirect admin users to external dashboard
         if (decoded.roles == "admin") {
-          // window.location.href = "http://localhost:5173/dashboard/home"; 
+          // window.location.href = "http://localhost:5173/dashboard/home";
         }
-
       } catch (error) {
         console.error("Error fetching token:", error);
         router.push("/signin"); // ✅ Redirect on error

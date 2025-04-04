@@ -1,0 +1,8 @@
+{
+  "/(site)/courses/course-detail/[id]/page": "app/(site)/courses/course-detail/[id]/page.js",
+  "/(site)/(pages)/signup/page": "app/(site)/(pages)/signup/page.js",
+  "/(site)/blogs/blog-details/[id]/page": "app/(site)/blogs/blog-details/[id]/page.js",
+  "/(site)/(pages)/signin/page": "app/(site)/(pages)/signin/page.js",
+  "/(site)/courses/course-grid-with-sidebar/page": "app/(site)/courses/course-grid-with-sidebar/page.js",
+  "/(site)/page": "app/(site)/page.js"
+}
