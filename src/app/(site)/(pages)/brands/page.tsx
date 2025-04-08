@@ -1,5 +1,4 @@
-import About from "@/components/about";
-import Contact from "@/components/about";
+import Brands from "@/components/brands";
 
 import { Metadata } from "next";
 export const metadata: Metadata = {
@@ -10,7 +9,7 @@ export const metadata: Metadata = {
 const AboutUS = () => {
   return (
     <main>
-      <About />
+      <Brands />
     </main>
   );
 };

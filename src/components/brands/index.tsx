@@ -14,8 +14,9 @@ import {
   FaWarehouse,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
+import Breadcrumb from "../Common/Breadcrumb";
 
-const Contact = () => {
+const Brands = () => {
   const coreValues = [
     {
       title: "Тоног төхөөрөмж",
@@ -69,7 +70,8 @@ const Contact = () => {
     { title: "Үйлчилгээ, түгээлтийн ажилтан-4", description: "", icon: FaCar },
   ];
   return (
-    <>
+    <>      <Breadcrumb title={"Бренд"} pages={["Бренд"]} />
+    
       <div className="min-h-screen bg-gradient-to-b from-white to-slate-100 text-gray-800 px-6">
         {/* Hero Section */}
         <section className="mx-auto py-20 px-6 flex flex-col items-center gap-12">
@@ -94,9 +96,7 @@ const Contact = () => {
             transition={{ duration: 0.8 }}
             className="max-w-2xl text-gray-700"
           >
-            <h2 className="text-3xl font-bold text-green-700 mb-4">
-              Бидний тухай
-            </h2>
+
             <p className="text-lg leading-relaxed">
               Манай компани нь шүдний эмнэлгийн материал, тоног төхөөрөмж ханган
               нийлүүлэх чиглэлээр дагнан ажилладаг мэргэшсэн байгууллага юм.
@@ -173,4 +173,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default Brands;

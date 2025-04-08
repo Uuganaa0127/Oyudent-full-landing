@@ -1,4 +1,4 @@
-// File: /Users/batbayaruugan-erdene/Desktop/Oyudent Landing/src/app/(site)/(pages)/signin/page.tsx
+// File: /Users/delgerzayadelgeree0714/Downloads/Oyudent-full-landing/src/app/(site)/(pages)/signin/page.tsx
 import * as entry from '../../../../../../src/app/(site)/(pages)/signin/page.js'
 import type { ResolvingMetadata } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
