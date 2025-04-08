@@ -2,7 +2,9 @@
 import { useState, useEffect } from "react";
 // import dynamic from "next/dynamic";
 import axios from "axios";
+import { useRef } from "react";
 import L from "leaflet";
+
 import "leaflet/dist/leaflet.css";
 import { apiRequest } from "@/utils/api"; // ✅ Import API function
 
@@ -10,53 +12,135 @@ import { apiRequest } from "@/utils/api"; // ✅ Import API function
 const La = L;
 
 export function sendTimeHr() {
-  const [attendance, setAttendance] = useState([
-    { date: "2023-09-01", timeIn: "09:00 AM", timeOut: "05:00 PM" },
-    { date: "2023-09-02", timeIn: "08:30 AM", timeOut: "04:30 PM" },
-    { date: "2023-09-03", timeIn: "10:00 AM", timeOut: "06:00 PM" },
-    { date: "2023-09-04", timeIn: "09:15 AM", timeOut: "05:15 PM" },
+  type AttendanceRecord = {
+    id: string;
+    createdAt: string;
+    type: string;
+    office: {
+      name: string;
+    };
+  };
+  const [attendance, setAttendance] = useState<AttendanceRecord[]>([
+   
   ]);
   const [location, setLocation] = useState({ latitude: null, longitude: null });
-  const [map, setMap] = useState(null);
-  const [marker, setMarker] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // const [map, setMap] = useState(null);
+  // const [marker, setMarker] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [error,setError]=useState('')
+  // const mapRef = useRef(null);
+  // const markerRef = useRef(null);
 
+  
   useEffect(() => {
+    getAccountData();
     if (typeof window !== "undefined" && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
           setLocation({ latitude, longitude });
-
-          if (!map) {
-            import("leaflet").then((L) => {
-              if (La.DomUtil.get("map") !== null) {
-                La.DomUtil.get("map")._leaflet_id = null;
-              }
-              const newMap = La.map("map").setView([latitude, longitude], 15);
-              L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-                attribution: "&copy; OpenStreetMap contributors",
-              }).addTo(newMap);
-              setMap(newMap);
-
-              if (marker) marker.remove();
-              const newMarker = La.marker([Laatitude, longitude]).addTo(newMap);
-              setMarker(newMarker);
-            });
-          } else {
-            map.setView([latitude, longitude], 15);
-            if (marker) marker.remove();
-            import("leaflet").then((L) => {
-              const newMarker = La.marker([latitude, longitude]).addTo(map);
-              setMarker(newMarker);
-            });
-          }
+          console.log("📍 Current Location:", latitude, longitude);
         },
-        () => console.error("Unable to retrieve location")
+        (err) => {
+          console.error("❌ Geolocation error:", err);
+          setError("Location access denied or unavailable.");
+        }
       );
+    } else {
+      setError("Geolocation is not supported in this browser.");
     }
-  }, [map]);
+  }, []);
+
+  // useEffect(() => {
+  //   getAccountData();
+    
+
+  //   if (typeof window !== "undefined" && navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+  //         const { latitude, longitude } = position.coords;
+  //         setLocation({ latitude, longitude });
+
+  //         if (!map) {
+  //           import("leaflet").then((L) => {
+  //             if (La.DomUtil.get("map") !== null) {
+  //               La.DomUtil.get("map")._leaflet_id = null;
+  //             }
+  //             const newMap = La.map("map").setView([latitude, longitude], 15);
+  //             L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  //               attribution: "&copy; OpenStreetMap contributors",
+  //             }).addTo(newMap);
+  //             setMap(newMap);
+
+  //             if (marker) marker.remove();
+  //             const newMarker = La.marker([latitude, longitude]).addTo(newMap);
+  //             setMarker(newMarker);
+  //           });
+  //         } else {
+  //           map.setView([latitude, longitude], 15);
+  //           if (marker) marker.remove();
+  //           import("leaflet").then((L) => {
+  //             const newMarker = La.marker([latitude, longitude]).addTo(map);
+  //             setMarker(newMarker);
+  //           });
+  //         }
+  //       },
+  //       () => console.error("Unable to retrieve location")
+  //     );
+  //   }
+  // }, []);
+  const getAccountData = async ()=>{
+    try{
+      const data1 = await apiRequest("timesheet", "GET");
+      setAttendance(data1);
+    }
+
+catch(err){
+  console.error("Login error:", err);
+
+};
+  }
+
+  const sendTime= async (data)=>{
+   
+    if (isSubmitting) return;
+
+    const formData = {
+      lat: data.latitude,
+      long: data.longitude,
+      type: 'in'
+    };
+    try{
+    const data1 = await apiRequest("timesheet", "POST", formData);
+    console.log(data1,'data1');
+
+  } catch (err) {
+    console.error("Login error:", err);
+  } finally{
+    setIsSubmitting(false);
+
+  }
+  }
+  const sendOutTime = async (data) => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    try {
+      const formData = {
+        lat: data.latitude,
+        long: data.longitude,
+        type: 'out'
+      };
+      const data1 = await apiRequest("timesheet", "POST", formData);
+      // console.log(data1, 'data1');
+    } catch (err) {
+      console.error("Login error:", err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const openPopup = (date) => {
     setSelectedDate(date);
@@ -70,11 +154,11 @@ export function sendTimeHr() {
 
   return (
     <div className="p-6 flex flex-col items-center gap-4 text-black mt-0 md:mt-10 sm:mt-50">
-      <div id="map" className="w-full h-64 border rounded"></div>
+      {/* <div id="map" className="w-full h-64 border rounded"/> */}
 
       <div className="flex flex-col w-full max-w-md gap-2">
-        <button className="bg-green-500 text-black px-4 py-2 rounded w-full hover:border-2 border-black">Send Time & Location</button>
-        <button className="bg-blue-500 text-black px-4 py-2 rounded w-full hover:border-2 border-black">Checkout</button>
+        <button onClick={()=> sendTime(location)} className="bg-green-500 text-black px-4 py-2 rounded w-full hover:border-2 border-black">Ирсан</button>
+        <button onClick={()=>sendOutTime(location)} className="bg-blue-500 text-black px-4 py-2 rounded w-full hover:border-2 border-black">Явсан</button>
       </div>
 
       {attendance.length > 0 ? (
@@ -85,27 +169,38 @@ export function sendTimeHr() {
               <thead>
                 <tr className="bg-gray-200 text-black">
                   <th className="border border-black px-4 py-2">Date</th>
-                  <th className="border border-black px-4 py-2">Time In</th>
-                  <th className="border border-black px-4 py-2">Time Out</th>
+                  <th className="border border-black px-4 py-2"> Type</th>
+                  <th className="border border-black px-4 py-2">Office</th>
                   <th className="border border-black px-4 py-2">Action</th>
                 </tr>
               </thead>
               <tbody>
-                {attendance.map((record, index) => (
-                  <tr key={index} className="hover:bg-gray-100 text-black">
-                    <td className="border border-black px-4 py-2 text-black">{record.date}</td>
-                    <td className="border border-black px-4 py-2 text-black">{record.timeIn}</td>
-                    <td className="border border-black px-4 py-2 text-black">{record.timeOut}</td>
-                    <td className="border border-black px-4 py-2">
-                      <button
-                        className="bg-red-500 text-black px-2 py-1 rounded hover:border-2 border-black"
-                        onClick={() => openPopup(record.date)}
-                      >
-                        Request Change
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+              {attendance.map((record, index) => (
+         <tr key={index} className="hover:bg-gray-100 text-black">
+
+         <td className="border border-black px-4 py-2 text-black">
+
+      {new Date(record.createdAt).toLocaleString()}
+
+    </td>
+    <td className="border border-black px-4 py-2 text-black">{record.type}</td>
+    <td className="border border-black px-4 py-2 text-black">{record.office?.name}</td>
+    <td className="border border-black px-4 py-2">
+  
+      <button
+        className="bg-red-500 text-black px-2 py-1 rounded hover:border-2 border-black"
+        onClick={() => openPopup(record.createdAt)}
+      >
+        Request Change
+
+      </button>
+
+    </td>
+
+  </tr>
+
+))}
+
               </tbody>
             </table>
           </div>

@@ -14,7 +14,7 @@ type DecodedToken = {
 const Signin = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [test, setTest] = useState<DecodedToken | null>(null);
-  const [userRole, setUserRole] = useState<boolean | null>(null);
+  const [userRole, setUserRole] = useState<boolean | null>(true);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -44,6 +44,7 @@ const Signin = () => {
       if (data?.access_token) {
         storeToken(data.access_token);
         decodeToken(data.access_token);
+        window.location.href = "my-account"
       }
     } catch (err) {
       console.error("Login error:", err);
@@ -54,6 +55,8 @@ const Signin = () => {
   const checkLoginC = async () => {
     try {
       const data = await apiRequest("auth/login/client", "POST", formData);
+      // console.log('test');
+      
       if (data?.access_token) {
         storeToken(data.access_token);
         decodeToken(data.access_token);

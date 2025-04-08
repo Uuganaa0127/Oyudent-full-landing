@@ -11,33 +11,69 @@ export const apiRequest = async (
   requiresAuth: boolean = false
 ) => {
   try {
-    let token = localStorage.getItem("auth/admin") || localStorage.getItem("auth/client");
-
-    // 🔥 If token is missing and request requires auth, try logging in
+    // Get token from local storage
+    // const token = localStorage.getItem("auth/admin") || localStorage.getItem("auth/client");
+    
+const token = getTokenFromCookie()
+    // If the request requires auth and no token is available, return null
     if (requiresAuth && !token) {
-      console.warn("No token found. Attempting auto-login...");
-      return null; // Prevent unauthorized requests
+      console.warn("No token found. Authentication required.");
+      window.location.href = "/"; 
+      return null;
     }
+    // const authToken = token || getTokenFromCookie();
+    // Prepare headers
+      console.log(token,'token');
 
+    const headers: Record<string, string> = {
+
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+
+    };
+
+    // Add Authorization header if token is present
+    // if (token) {
+    //   // console.log('ss');
+      
+    //   headers["Authorization"] = `Bearer ${token}`;
+    // }
+
+    // Send request
     const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
       method,
-      headers: {
-        "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      },
+      headers,
       body: body ? JSON.stringify(body) : undefined,
     });
 
+    if (response.status === 401) {
+      // console.log('sda');
+      
+        window.location.href = "/"; 
+  
+        return null; // No content
+      }
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
+   else if (response.status === 204) {
+      return null; // No content
+    }
+    const contentType = response.headers.get("Content-Type");
 
+    if (!contentType || !contentType.includes("application/json")) {
+      const text = await response.text();
+      return text || null;
+    }
+    
+  
     return await response.json();
   } catch (error) {
     console.error(`API Error [${method} ${endpoint}]:`, error);
     throw error;
   }
 };
+
 // SignUpUser 
 
 export const signUpUser = async (userData: {
@@ -48,20 +84,26 @@ export const signUpUser = async (userData: {
   password: string;
   passwordMatch: string;
   register: string;
-}) => {
+},a:boolean) => {
   try {
     if (userData.password !== userData.passwordMatch) {
       throw new Error("Passwords do not match.");
     }
 
-    const response = await apiRequest("auth/register/client", "POST", userData);
+    let response;
 
-    console.log("User signed up successfully:", response);
+    if (!a === true) {
+      response = await apiRequest("auth/register/", "POST", userData);
+    } else {
+      response = await apiRequest("auth/register/client", "POST", userData);
+    }
+
     return response;
   } catch (error) {
     console.error("Signup Error:", error);
     throw error;
   }
+
 };
 
 // 🔥 Store Token Based on Role
