@@ -1,173 +1,107 @@
 "use client";
-import React from "react";
-import {
-  FaTooth,
-  FaFlask,
-  FaHandsHelping,
-  FaUserTie,
-  FaShieldAlt,
-  FaMoneyCheckAlt,
-  FaChalkboardTeacher,
-  FaUserCog,
-  FaClipboardCheck,
-  FaCar,
-  FaWarehouse,
-} from "react-icons/fa";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Breadcrumb from "../Common/Breadcrumb";
+import { FaSpinner } from "react-icons/fa";
+
+type Partner = {
+  id: number;
+  name: string;
+  picture: string;
+  special: boolean;
+  deletedAt: string | null;
+  country: {
+    code: number;
+    name: string;
+    deletedAt: string | null;
+  };
+};
 
 const Brands = () => {
-  const coreValues = [
-    {
-      title: "Тоног төхөөрөмж",
-      description:
-        "Шүдний эмнэлгийн тоног төхөөрөмж: Суурин болон зөөврийн бор машин, гэрлийн аппарат, сувгийн мотор, микроскоп зэрэг бүх тоног төхөөрөмжүүд, хиймэл шүдний лабораторийн тоон болон аналог бүх тоног төхөөрөмжүүдийг ХБНГУ-ын Ritter, Renfert, Dentaururm, Японы Yamahachy, NSK, БНХАУ-ын Woodpecker, Runeys, БНСУ-ын Genoray, Dmetec зэрэг компаниудаас импортлон оруулж ирж байна.",
-      icon: FaTooth,
-    },
-    {
-      title: "Эмчилгээний материал",
-      description:
-        "Шүдний эмчилгээнд зориулсан бүх төрлийн материал оруулж ирж байна. Манай компани нь дэлхийд эм үйлдвэрлэлийн технологиоороо тэргүүлдэг Франц улсын Septodont компаний бүх төрлийн бүтээгдэхүүнийг 2022 оноос албан ёсны эрхтэйгээр оруулж ирж байгааг онцолж байна. Энэхүү компаний хэсгийн мэдээ алдауулах Lignospan тариа нь маш чанартай үйлчилгээ сайтай байдаг.",
-      icon: FaFlask,
-    },
-    {
-      title: "Багаж хэрэгсэл",
-      description:
-        "Бид үнэ болон чанарын олон сонголттойгоор Итали, Герман, Пакистан, Орос, Солонгос, Хятад улссас эмчилгээ, гажиг засал, лабораторид зориулсан гар багаж, хэрэгсэл, нэг удаагийн бүтээгдэхүүнийг Монгол улсын зах зээл дээр ханган нийлүүлж байна",
-      icon: FaHandsHelping,
-    },
-  ];
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<Partner[]>([]);
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(3);
+  const [totalPages, setTotalPages] = useState(0);
 
-  const humanResources = [
-    {
-      title: "Захирал",
-      description: "Шүдний эмч мэргэжилтэй 27 жил мэргэжлээрээ ажилласан.",
-      icon: FaUserTie,
-    },
-    { title: "Чанарын менежер", description: "Шүдний эмч", icon: FaShieldAlt },
-    {
-      title: "Худалдааны менежер",
-      description: "Шүдний эмч",
-      icon: FaMoneyCheckAlt,
-    },
-    {
-      title: "Сургалтын менежер",
-      description: "Шүдний эмч",
-      icon: FaChalkboardTeacher,
-    },
-    { title: "Агуулахын эрхлэгч", description: "Эм зүйч", icon: FaWarehouse },
-    {
-      title: "Эмнэлгийн тоног төхөөрөмжийн инженер-2",
-      description:
-        "Эмнэлгийн тоног төхөөрөмжийн инженер, Мэдээллийн технологийн инженер",
-      icon: FaUserCog,
-    },
-    {
-      title: "Борлуулалтын ажилтан-3",
-      description: "Шүдний техникч Сувилагч Шүдний эмнэлгийн туслах",
-      icon: FaClipboardCheck,
-    },
-    { title: "Үйлчилгээ, түгээлтийн ажилтан-4", description: "", icon: FaCar },
-  ];
+  useEffect(() => {
+    fetchData();
+  }, [page, size]);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `http://103.41.112.95:3000/v1/partner/new?page=${page}&size=${size}`
+      );
+      if (!response.ok) throw new Error(`Error: ${response.status}`);
+      const json = await response.json();
+      setData(json.result);
+      setTotalPages(json.total / size);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePrev = () => {
+    if (page > 0) setPage(page - 1);
+  };
+
+  const handleNext = () => {
+    if (page < totalPages - 1) setPage(page + 1);
+  };
+
   return (
-    <>      <Breadcrumb title={"Бренд"} pages={["Бренд"]} />
-    
-      <div className="min-h-screen bg-gradient-to-b from-white to-slate-100 text-gray-800 px-6">
-        {/* Hero Section */}
-        <section className="mx-auto py-20 px-6 flex flex-col items-center gap-12">
-          {/* Logo Image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="flex-shrink-0"
-          >
-            <img
-              src="images/logo/Oyudent.svg"
-              alt="Company Logo"
-              className="w-52 h-52"
-            />
-          </motion.div>
-
-          {/* Company Description */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-2xl text-gray-700"
-          >
-
-            <p className="text-lg leading-relaxed">
-              Манай компани нь шүдний эмнэлгийн материал, тоног төхөөрөмж ханган
-              нийлүүлэх чиглэлээр дагнан ажилладаг мэргэшсэн байгууллага юм.
-            </p>
-            <p className="mt-4 text-lg leading-relaxed">
-              Бид Герман, Япон, БНСУ, Итали, АНУ, Швейцарь зэрэг 30+ орны 100+
-              чанарын баталгаатай брэндүүдийн бүтээгдэхүүнийг Монголын зах зээлд
-              албан ёсны эрхтэйгээр импортлон нийлүүлдэг.
-            </p>
-            <p className="mt-4 text-lg leading-relaxed">
-              Монголын 350 гаруй эмнэлэг, эрүүл мэндийн байгууллагуудтай хамтран
-              ажиллаж, сүүлийн үеийн дэвшилтэт технологи, шинэ материалуудыг
-              салбарын эмч мэргэжилтнүүдэд хүргэж байна.
-            </p>
-          </motion.div>
-        </section>
-
-        {/* Core Values Section */}
-        <section className="py-16">
-          <h2 className="text-3xl font-bold text-center text-green-700">
-            Our Core Values
-          </h2>
-          <motion.div
-            className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto"
-            initial="hidden"
-            animate="visible"
-            variants={{ visible: { transition: { staggerChildren: 0.3 } } }}
-          >
-            {coreValues.map((value, index) => (
+    <>
+      <Breadcrumb title={"Бренд"} pages={["Бренд"]} />
+      <div className="container mx-auto px-4 py-8">
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <FaSpinner className="animate-spin text-4xl text-blue-500" />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {data?.map((partner) => (
               <motion.div
-                key={index}
-                className="p-6 bg-white shadow-md rounded-xl text-center flex flex-col items-center transform transition-transform duration-300 hover:scale-105 hover:shadow-xl"
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 },
-                }}
+                key={partner.id}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                className="bg-white shadow-xl rounded-2xl p-6 flex flex-col items-center text-center transition-all duration-300"
               >
-                <value.icon className="text-green-600 text-4xl mb-4" />
-                <h3 className="text-xl font-semibold">{value.title}</h3>
-                <p className="text-gray-600 mt-2">{value.description}</p>
+                <img
+                  src={`http://103.41.112.95:3000/images/${partner.picture}`}
+                  alt={partner.name}
+                  className="w-24 h-24 object-contain mb-4"
+                />
+                <h3 className="text-lg font-semibold mb-1">{partner.name}</h3>
+                <p className="text-sm text-gray-500">{partner.country?.name}</p>
               </motion.div>
             ))}
-          </motion.div>
-        </section>
+          </div>
+        )}
 
-        {/* Human Resource Section */}
-        <section className="py-16 bg-green-50">
-          <h2 className="text-3xl font-bold text-center text-green-700">
-            Хүний нөөцийн мэргэшсэн байдал
-          </h2>
-          <motion.div
-            className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto"
-            initial="hidden"
-            animate="visible"
-            variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
+        {/* Pagination */}
+        <div className="flex justify-center items-center gap-4 mt-10">
+          <button
+            onClick={handlePrev}
+            disabled={page === 0}
+            className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 disabled:opacity-50 transition"
           >
-            {humanResources.map((item, index) => (
-              <motion.div
-                key={index}
-                className="p-6 bg-white shadow-md rounded-xl text-center flex flex-col items-center transform transition-transform duration-300 hover:scale-105 hover:shadow-xl"
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 },
-                }}
-              >
-                <item.icon className="text-green-600 text-4xl mb-4" />
-                <h3 className="text-lg font-semibold">{item.title}</h3>
-              </motion.div>
-            ))}
-          </motion.div>
-        </section>
+            Previous
+          </button>
+          <span className="text-sm font-medium">
+            Page {page + 1} of {totalPages}
+          </span>
+          <button
+            onClick={handleNext}
+            disabled={page + 1 >= totalPages}
+            className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 disabled:opacity-50 transition"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </>
   );

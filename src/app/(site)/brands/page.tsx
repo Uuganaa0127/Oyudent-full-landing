@@ -2,11 +2,11 @@ import Brands from "@/components/brands";
 
 import { Metadata } from "next";
 export const metadata: Metadata = {
-  title: "About us || Oyudent",
+  title: "Partners || Oyudent",
   description: "Тавтай морил",
 };
 
-const AboutUS = () => {
+const Brand = () => {
   return (
     <main>
       <Brands />
@@ -14,4 +14,4 @@ const AboutUS = () => {
   );
 };
 
-export default AboutUS;
+export default Brand;
