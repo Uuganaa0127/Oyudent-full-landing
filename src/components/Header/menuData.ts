@@ -25,6 +25,12 @@ export const menuData: Menu[] = [
     newTab: false,
     path: "/AboutUs",
   },
+  {
+    id: 4,
+    title: "Брендүүд",
+    newTab: false,
+    path: "/brands",
+  },
   // {
   //   id: 4,
   //   title: "News",

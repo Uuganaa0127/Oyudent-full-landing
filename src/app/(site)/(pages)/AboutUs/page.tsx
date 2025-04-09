@@ -1,4 +1,5 @@
-import Contact from "@/components/Contact";
+import About from "@/components/about";
+import Contact from "@/components/about";
 
 import { Metadata } from "next";
 export const metadata: Metadata = {
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 const AboutUS = () => {
   return (
     <main>
-      <Contact />
+      <About />
     </main>
   );
 };

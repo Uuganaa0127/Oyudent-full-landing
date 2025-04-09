@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   FaTooth,
   FaFlask,
@@ -14,8 +14,11 @@ import {
   FaWarehouse,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
+import Breadcrumb from "../Common/Breadcrumb";
 
-const Contact = () => {
+const About = () => {
+  const [selectedItem, setSelectedItem] = useState(null);
+
   const coreValues = [
     {
       title: "Тоног төхөөрөмж",
@@ -70,6 +73,8 @@ const Contact = () => {
   ];
   return (
     <>
+      {" "}
+      <Breadcrumb title={"Бидний тухай"} pages={["Бидний тухай"]} />
       <div className="min-h-screen bg-gradient-to-b from-white to-slate-100 text-gray-800 px-6">
         {/* Hero Section */}
         <section className="mx-auto py-20 px-6 flex flex-col items-center gap-12">
@@ -94,9 +99,6 @@ const Contact = () => {
             transition={{ duration: 0.8 }}
             className="max-w-2xl text-gray-700"
           >
-            <h2 className="text-3xl font-bold text-green-700 mb-4">
-              Бидний тухай
-            </h2>
             <p className="text-lg leading-relaxed">
               Манай компани нь шүдний эмнэлгийн материал, тоног төхөөрөмж ханган
               нийлүүлэх чиглэлээр дагнан ажилладаг мэргэшсэн байгууллага юм.
@@ -156,7 +158,8 @@ const Contact = () => {
             {humanResources.map((item, index) => (
               <motion.div
                 key={index}
-                className="p-6 bg-white shadow-md rounded-xl text-center flex flex-col items-center transform transition-transform duration-300 hover:scale-105 hover:shadow-xl"
+                onClick={() => setSelectedItem(item)} // <- set selected data
+                className="p-6 bg-white shadow-md rounded-xl text-center flex flex-col items-center transform transition-transform duration-300 hover:scale-105 hover:shadow-xl cursor-pointer"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0 },
@@ -166,6 +169,57 @@ const Contact = () => {
                 <h3 className="text-lg font-semibold">{item.title}</h3>
               </motion.div>
             ))}
+            <>
+              {selectedItem && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50"
+                  onClick={() => setSelectedItem(null)}
+                >
+                  <motion.div
+                    onClick={(e) => e.stopPropagation()}
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.95, opacity: 0 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="bg-white dark:bg-zinc-900 rounded-2xl w-full max-w-md mx-4 p-6 relative shadow-2xl"
+                  >
+                    {/* Close Button */}
+                    <button
+                      onClick={() => setSelectedItem(null)}
+                      className="absolute top-3 right-3 text-zinc-400 hover:text-red-500 focus:outline-none"
+                      aria-label="Close"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+
+                    <div className="flex flex-col items-center text-center space-y-4">
+                      <h5 className="text-2xl font-semibold text-zinc-600 ">
+                        {selectedItem.title}
+                      </h5>
+                      <p className="text-sm text-zinc-600 dark:text-zinc-300">
+                        {selectedItem.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              )}
+            </>
           </motion.div>
         </section>
       </div>
@@ -173,4 +227,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default About;
