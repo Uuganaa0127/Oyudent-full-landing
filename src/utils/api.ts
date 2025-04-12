@@ -18,12 +18,14 @@ const token = getTokenFromCookie()
     // If the request requires auth and no token is available, return null
     if (requiresAuth && !token) {
       console.warn("No token found. Authentication required.");
-      window.location.href = "/"; 
+      
+      // window.location.href = "/"; 
       return null;
     }
     // const authToken = token || getTokenFromCookie();
     // Prepare headers
       console.log(token,'token');
+      
 
     const headers: Record<string, string> = {
 
@@ -31,6 +33,19 @@ const token = getTokenFromCookie()
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
 
     };
+    
+    // const decoded: { roles: string[] } = jwtDecode(token);
+    // const isAdmin = decoded.roles.includes("admin");
+    // console.log(decoded,"decoded");
+    
+    // if (!Array.isArray(decoded?.roles) || decoded.roles.length === 0) {
+    //   console.log("User has no roles or roles is not an array.");
+    // }else{
+
+    // }
+    // if (!token) {
+    //   window.location.href = ('/'); 
+    // }
 
     // Add Authorization header if token is present
     // if (token) {
@@ -49,7 +64,7 @@ const token = getTokenFromCookie()
     if (response.status === 401) {
       // console.log('sda');
       
-        window.location.href = "/"; 
+        // window.location.href = "/"; 
   
         return null; // No content
       }
@@ -76,6 +91,29 @@ const token = getTokenFromCookie()
 
 // SignUpUser 
 
+export const signIn = async (userData: {
+  username: string;
+  password: string;
+},a:boolean) => {
+  try {
+
+
+    let response;
+
+    if (a === true) {
+      response = await apiRequest("auth/login", "POST", userData);
+      window.location.href = "my-account"
+    } else {
+      response = await apiRequest("auth/login/client", "POST", userData);
+    }
+
+    return response;
+  } catch (error) {
+    console.error("Signup Error:", error);
+    throw error;
+  }
+
+};
 export const signUpUser = async (userData: {
   firstname: string;
   lastname: string;
@@ -120,6 +158,12 @@ export const storeToken = (token: string) => {
       document.cookie = `auth_token=${token}; Path=/; SameSite=Lax; Max-Age=86400`;
   
       console.log(`${isAdmin ? "Admin" : "Client"} token stored in cookie:`, token);
+      if (!token) {
+        console.log(token);
+        
+        // window.location.href = ('/'); 
+      }
+
     } catch (error) {
       console.error("Error decoding token:", error);
     }

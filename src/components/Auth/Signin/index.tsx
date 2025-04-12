@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-import { apiRequest, storeToken, getTokenFromCookie } from "@/utils/api"; // ✅ Import API functions
+import { apiRequest, storeToken, getTokenFromCookie ,signIn} from "@/utils/api"; // ✅ Import API functions
 
 type DecodedToken = {
   exp: number;
@@ -37,34 +37,48 @@ const Signin = () => {
     fetchToken();
   }, []);
 
+  const login = async(a:boolean)=>{
+    try { 
+      const data = await signIn(formData,a)
+      if (data?.access_token) {
+        storeToken(data.access_token);
+        decodeToken(data.access_token);
+        // window.location.href = "my-account"
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+    }
+    
+  };
+  
   // ✅ Updated Admin Login API
-  const checkLoginA = async () => {
-    try {
-      const data = await apiRequest("auth/login", "POST", formData);
-      if (data?.access_token) {
-        storeToken(data.access_token);
-        decodeToken(data.access_token);
-        window.location.href = "my-account"
-      }
-    } catch (err) {
-      console.error("Login error:", err);
-    }
-  };
+  // const checkLoginA = async () => {
+  //   try {
+  //     const data = await apiRequest("auth/login", "POST", formData);
+  //     if (data?.access_token) {
+  //       storeToken(data.access_token);
+  //       decodeToken(data.access_token);
+  //       // window.location.href = "my-account"
+  //     }
+  //   } catch (err) {
+  //     console.error("Login error:", err);
+  //   }
+  // };
 
-  // ✅ Updated Client Login API
-  const checkLoginC = async () => {
-    try {
-      const data = await apiRequest("auth/login/client", "POST", formData);
-      // console.log('test');
+  // // ✅ Updated Client Login API
+  // const checkLoginC = async () => {
+  //   try {
+  //     const data = await apiRequest("auth/login/client", "POST", formData);
+  //     // console.log('test');
       
-      if (data?.access_token) {
-        storeToken(data.access_token);
-        decodeToken(data.access_token);
-      }
-    } catch (err) {
-      console.error("Login error:", err);
-    }
-  };
+  //     if (data?.access_token) {
+  //       storeToken(data.access_token);
+  //       decodeToken(data.access_token);
+  //     }
+  //   } catch (err) {
+  //     console.error("Login error:", err);
+  //   }
+  // };
 
   // ✅ Decode Token
   const decodeToken = (token: string) => {
@@ -119,7 +133,8 @@ const Signin = () => {
               <form
                 onSubmit={(event) => {
                   event.preventDefault();
-                  userRole ? checkLoginA() : checkLoginC();
+                  login(userRole);
+                  // userRole ? checkLoginA() : checkLoginC();
                 }}
               >
                 <div className="mb-5">

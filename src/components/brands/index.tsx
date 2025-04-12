@@ -7,7 +7,7 @@ import { FaSpinner } from "react-icons/fa";
 type Partner = {
   id: number;
   name: string;
-  picture: string;
+  logo: string;
   special: boolean;
   deletedAt: string | null;
   country: {
@@ -19,9 +19,10 @@ type Partner = {
 
 const Brands = () => {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<Partner[]>([]);
+  const [data, setData] = useState<{ result: Partner[]; total: number } | null>(null);
+
   const [page, setPage] = useState(0);
-  const [size, setSize] = useState(3);
+  const [size, setSize] = useState(9);
   const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
@@ -32,11 +33,17 @@ const Brands = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `http://103.41.112.95:3000/v1/partner/new?page=${page}&size=${size}`
+        `http://103.41.112.95:3000/v1/manufacturer?size=${size}&page=${page}`
       );
+      
       if (!response.ok) throw new Error(`Error: ${response.status}`);
+
       const json = await response.json();
-      setData(json.result);
+      console.log(json,'res');
+
+      setData(json);
+      console.log(data);
+      
       setTotalPages(json.total / size);
     } catch (err) {
       console.error(err);
@@ -63,7 +70,7 @@ const Brands = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {data?.map((partner) => (
+            {data.result?.map((partner) => (
               <motion.div
                 key={partner.id}
                 whileHover={{ scale: 1.03 }}
@@ -71,7 +78,7 @@ const Brands = () => {
                 className="bg-white shadow-xl rounded-2xl p-6 flex flex-col items-center text-center transition-all duration-300"
               >
                 <img
-                  src={`http://103.41.112.95:3000/images/${partner.picture}`}
+                  src={`http://103.41.112.95:3000/images/${partner.logo}`}
                   alt={partner.name}
                   className="w-24 h-24 object-contain mb-4"
                 />

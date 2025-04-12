@@ -187,7 +187,7 @@ const Header = () => {
                 </div> )
                 : (
               <div className="flex items-center gap-5">
-   <Link href="/signup" className="flex items-center gap-2.5">
+   {/* <Link href="/signup" className="flex items-center gap-2.5">
                   <svg
                     width="24"
                     height="24"
@@ -215,7 +215,7 @@ const Header = () => {
                     Бүртгүүлэх
                     </p>
                   </div>
-                </Link>
+                </Link> */}
                   <Link href="/my-account" className="flex items-center gap-2.5">
                   <svg
                     width="24"

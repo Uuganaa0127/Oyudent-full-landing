@@ -6,7 +6,7 @@ import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 
 const AutoLogoSlider = () => {
-  const [data, setData] = useState<string[] | null>(null);
+  const [data, setData] = useState<{ result: { logo: string }[] } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -14,7 +14,7 @@ const AutoLogoSlider = () => {
     const fetchLogos = async () => {
       try {
         const response = await fetch(
-          'http://103.41.112.95:3000/v1/manufacturer'
+          'http://103.41.112.95:3000/v1/manufacturer?size=10&page=2'
         );
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
@@ -55,7 +55,7 @@ const AutoLogoSlider = () => {
             1024: { slidesPerView: 6 },
           }}
         >
-          {data.map((logo: any, index) => (
+          {data?.result.map((logo: any, index) => (
             <SwiperSlide key={index}>
               <img
                 src={`http://103.41.112.95:3000/images/${logo.logo}`}
