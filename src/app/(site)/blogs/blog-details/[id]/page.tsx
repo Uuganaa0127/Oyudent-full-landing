@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import { apiRequest } from "@/utils/api"; 
 
 interface Blog {
   id: number;
@@ -23,24 +24,12 @@ const BlogDetail = () => {
   useEffect(() => {
     if (!id) return;
 
-    const fetchBlog = async () => {
-      try {
-        const response = await fetch(`http://103.41.112.95:3000/v1/blog/${id}`);
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-
-        const result: Blog = await response.json();
-        setBlog(result);
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchBlog();
   }, [id]);
+  const fetchBlog = async () => {
+    const response = await apiRequest(`blog/${id}`,"GET")
+    setBlog(response)
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -52,7 +41,7 @@ const BlogDetail = () => {
 
       <div className="w-full h-72 relative mt-5 flex justify-center">
         <Image
-          src={`http://103.41.112.95:3000/images/${blog.thumbnail}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/images/${blog.thumbnail}`}
           alt={blog.title}
           layout="fill"
           objectFit="cover"

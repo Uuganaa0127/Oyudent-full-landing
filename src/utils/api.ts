@@ -2,7 +2,8 @@
 
 import { jwtDecode } from "jwt-decode";
 
-const API_BASE_URL = "http://103.41.112.95:3000/v1";
+const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}/v1`;
+
 
 export const apiRequest = async (
   endpoint: string,
@@ -11,50 +12,18 @@ export const apiRequest = async (
   requiresAuth: boolean = false
 ) => {
   try {
-    // Get token from local storage
-    // const token = localStorage.getItem("auth/admin") || localStorage.getItem("auth/client");
-    
-const token = getTokenFromCookie()
-    // If the request requires auth and no token is available, return null
-    if (requiresAuth && !token) {
-      console.warn("No token found. Authentication required.");
-      
-      // window.location.href = "/"; 
-      return null;
-    }
-    // const authToken = token || getTokenFromCookie();
-    // Prepare headers
-      console.log(token,'token');
-      
-
+    //  const token = getTokenFromCookie()
+    // if (requiresAuth && !token) {
+    //   console.warn("No token found. Authentication required.");
+    //   return null;
+    // }
+     
+    // console.log(token,'token');
     const headers: Record<string, string> = {
 
       "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-
+      Authorization: `Bearer ${getTokenFromCookie()}` 
     };
-    
-    // const decoded: { roles: string[] } = jwtDecode(token);
-    // const isAdmin = decoded.roles.includes("admin");
-    // console.log(decoded,"decoded");
-    
-    // if (!Array.isArray(decoded?.roles) || decoded.roles.length === 0) {
-    //   console.log("User has no roles or roles is not an array.");
-    // }else{
-
-    // }
-    // if (!token) {
-    //   window.location.href = ('/'); 
-    // }
-
-    // Add Authorization header if token is present
-    // if (token) {
-    //   // console.log('ss');
-      
-    //   headers["Authorization"] = `Bearer ${token}`;
-    // }
-
-    // Send request
     const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
       method,
       headers,
@@ -62,10 +31,7 @@ const token = getTokenFromCookie()
     });
 
     if (response.status === 401) {
-      // console.log('sda');
-      
         // window.location.href = "/"; 
-  
         return null; // No content
       }
     if (!response.ok) {
@@ -180,10 +146,10 @@ export const getTokenFromCookie = () => {
       }, {} as Record<string, string>);
   
       if (cookies.auth_token) {
-        console.log("Retrieved token from cookie:", cookies.auth_token);
+        // console.log("Retrieved token from cookie:", cookies.auth_token);
         return cookies.auth_token;
       } else {
-        console.warn("No auth_token found in cookies.");
+        // console.warn("No auth_token found in cookies.");
       }
     } catch (error) {
       console.error("Error reading token from cookies:", error);

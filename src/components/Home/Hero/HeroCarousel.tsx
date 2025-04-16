@@ -31,7 +31,7 @@ const HeroCarousal = ({ data }) => {
             {/* Image Container with Fixed Aspect Ratio */}
             <div className="relative w-full sm:w-1/2 h-72 mb-4 sm:mb-0  bg-[#DBF4F3]">
               <Image
-                src={`http://103.41.112.95:3000/images/${col.picture ?? "default.jpg"}`}
+                src={`${process.env.NEXT_PUBLIC_API_URL}/images/${col.picture ?? "default.jpg"}`}
                 alt="item-image"
                 layout="fill"
                 objectFit="cover"

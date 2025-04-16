@@ -1,13 +1,18 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Breadcrumb from "../Common/Breadcrumb";
-import BlogItem from "../Blog/BlogItem";
-import blogData from "../BlogGrid/blogData";
-import SearchForm from "../Blog/SearchForm";
-import LatestPosts from "../Blog/LatestPosts";
 import LatestProducts from "../Blog/LatestProducts";
 import Categories from "../Blog/Categories";
 import shopData from "../Shop/shopData";
+import blogData from "../BlogGrid/blogData";
+
+import React, { useEffect, useState } from "react";
+import Breadcrumb from "../Common/Breadcrumb";
+import BlogItem from "../Blog/BlogItem";
+import SearchForm from "../Blog/SearchForm";
+import LatestPosts from "../Blog/LatestPosts";
+
+import { apiRequest } from "@/utils/api"; // ✅ Import API function
+
+
 
 const BlogGridWithSidebar = () => {
   const [data, setData] = useState([]);
@@ -18,47 +23,11 @@ const BlogGridWithSidebar = () => {
     fetchData();
   }, []);
 
-  const categories = [
-    {
-      name: "Desktop",
-      products: 10,
-    },
-    {
-      name: "Laptop",
-      products: 12,
-    },
-    {
-      name: "Monitor",
-      products: 30,
-    },
-    {
-      name: "UPS",
-      products: 23,
-    },
-    {
-      name: "Phone",
-      products: 10,
-    },
-    {
-      name: "Watch",
-      products: 13,
-    },
-  ];
-
   const fetchData = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch("http://103.41.112.95:3000/v1/blog?limit=4");
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-      const data1 = await response.json();
-      setData(data1);
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
+    const response = await apiRequest("blog?limit=10","GET")
+    setData(response);
+
+    
   };
 
   return (

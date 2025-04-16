@@ -20,7 +20,7 @@ const LatestPosts = ({ blogs }) => {
                 className="max-w-[110px] w-full rounded-[10px] overflow-hidden"
               >
                 <Image
-                  src={`http://103.41.112.95:3000/images/${blog?.thumbnail}`}
+                  src={`${process.env.NEXT_PUBLIC_API_URL}/images/${blog?.thumbnail}`}
                   alt="blog"
                   className="rounded-[10px] w-full"
                   width={110}

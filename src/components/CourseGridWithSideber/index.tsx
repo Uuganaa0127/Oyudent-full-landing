@@ -11,6 +11,7 @@ import shopData from "../Shop/shopData";
 import CourseItem from "../Courses/CourseItem";
 import CourseSearchForm from "../Courses/CourseSearchForm";
 import CourseLatestPosts from "../Courses/CourseLatestPosts";
+import { apiRequest } from "@/utils/api"; 
 
 const CourseGridWithSideber = () => {
   const [data, setData] = useState([]);
@@ -20,51 +21,13 @@ const CourseGridWithSideber = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
-  const categories = [
-    {
-      name: "Desktop",
-      products: 10,
-    },
-    {
-      name: "Laptop",
-      products: 12,
-    },
-    {
-      name: "Monitor",
-      products: 30,
-    },
-    {
-      name: "UPS",
-      products: 23,
-    },
-    {
-      name: "Phone",
-      products: 10,
-    },
-    {
-      name: "Watch",
-      products: 13,
-    },
-  ];
-
   const fetchData = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(
-        "http://103.41.112.95:3000/v1/course?limit=4"
-      );
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-      const data1 = await response.json();
-      setData(data1);
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    setLoading(true);
+    const response = await apiRequest("course?limit=10","GET")
+    setData(response)
+
+  }
+  
 
   return (
     <>

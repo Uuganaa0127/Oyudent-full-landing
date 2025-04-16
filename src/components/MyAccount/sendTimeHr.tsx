@@ -1,8 +1,6 @@
 
 import { useState, useEffect } from "react";
 // import dynamic from "next/dynamic";
-import axios from "axios";
-import { useRef } from "react";
 import L from "leaflet";
 
 import "leaflet/dist/leaflet.css";

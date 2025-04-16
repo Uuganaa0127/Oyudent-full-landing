@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation"; // ✅ Use useParams instead of useRouter
 import Image from "next/image";
+import { apiRequest } from "@/utils/api"; // ✅ Import API function
 
 interface Blog {
   id: number;
@@ -22,28 +23,17 @@ const BlogDetail = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!id) return;
-
-    const fetchBlog = async () => {
-      try {
-        const response = await fetch(`http://103.41.112.95:3000/v1/blog/${id}`);
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-
-        const result: Blog = await response.json();
-        setBlog(result);
-        // console.log(result,'sda');
-        
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
+    // if (!id) return;
+    console.log(blog,'blog');
+    
     fetchBlog();
   }, [id]);
+  const fetchBlog = async () => {
+
+    const response = await apiRequest(`/blog/${id}`,"GET")
+    setBlog(response)
+ 
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -51,12 +41,13 @@ const BlogDetail = () => {
 
   return (
     <section className="max-w-[900px] mx-auto py-10 px-4 pt-50">
-      <h1 className="text-3xl font-bold text-center">{blog.title}</h1>
+      <h1 className="text-3xl font-bold text-center">{blog.title}
+      pizda
+      </h1>
 
       <div className="w-full h-72 relative mt-5">
-        pizda
         <Image
-          src={`http://103.41.112.95:3000/${blog.banner}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}${blog.banner}`}
           alt={blog.title}
           layout="fill"
           objectFit="cover"

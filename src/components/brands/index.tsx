@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Breadcrumb from "../Common/Breadcrumb";
 import { FaSpinner } from "react-icons/fa";
+import { apiRequest } from "@/utils/api"; // ✅ Import API function
 
 type Partner = {
   id: number;
@@ -30,27 +31,12 @@ const Brands = () => {
   }, [page, size]);
 
   const fetchData = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(
-        `http://103.41.112.95:3000/v1/manufacturer?size=${size}&page=${page}`
-      );
-      
-      if (!response.ok) throw new Error(`Error: ${response.status}`);
-
-      const json = await response.json();
-      console.log(json,'res');
-
-      setData(json);
-      console.log(data);
-      
-      setTotalPages(json.total / size);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    setLoading(true)
+    const response = await apiRequest(`manufacturer?size=${size}&page=${page}`,"GET")
+    setData(response);
+    if(response) {setLoading(false)}
+    setTotalPages(Math.ceil(response.total / size));
+  }
 
   const handlePrev = () => {
     if (page > 0) setPage(page - 1);
@@ -70,7 +56,7 @@ const Brands = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {data.result?.map((partner) => (
+            {data?.result?.map((partner) => (
               <motion.div
                 key={partner.id}
                 whileHover={{ scale: 1.03 }}
@@ -78,7 +64,7 @@ const Brands = () => {
                 className="bg-white shadow-xl rounded-2xl p-6 flex flex-col items-center text-center transition-all duration-300"
               >
                 <img
-                  src={`http://103.41.112.95:3000/images/${partner.logo}`}
+                  src={`${process.env.NEXT_PUBLIC_API_URL}/images/${partner.logo}`}
                   alt={partner.name}
                   className="w-24 h-24 object-contain mb-4"
                 />

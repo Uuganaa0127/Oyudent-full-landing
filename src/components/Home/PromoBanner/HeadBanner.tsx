@@ -2,6 +2,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import { useEffect, useState } from "react";
+import { apiRequest } from "@/utils/api"; // ✅ Import API function
 
 // Import Swiper styles
 import "swiper/css";
@@ -20,24 +21,14 @@ const HeadBanner = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [hasButton, setHasButton] = useState<boolean>(false); // ✅ Check if any slide has a button
+  const [data1,setData1]=useState<String|null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await fetch("http://103.41.112.95:3000/v1/banner");
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-        const result = await response.json();
-        setData(result);
-
-        // ✅ Check if any slide has a button
-        setHasButton(result.some((item) => item.buttonText && item.buttonLink));
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
+      const response = await apiRequest('banner',"GET")
+        setData(response)
+        setHasButton(response.some((item) => item.buttonText && item.buttonLink));
         setLoading(false);
-      }
     };
 
     fetchData();
@@ -67,7 +58,7 @@ const HeadBanner = () => {
             <div
               className="relative flex flex-col items-center justify-center w-full h-[500px] sm:h-[600px] lg:h-[700px] rounded-3xl overflow-hidden bg-cover bg-center shadow-md"
               style={{
-                backgroundImage: `url(http://103.41.112.95:3000/images/${item.image})`,
+                backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/images/${item.image})`,
               }}
             >
               {/* Glassmorphism Overlay */}

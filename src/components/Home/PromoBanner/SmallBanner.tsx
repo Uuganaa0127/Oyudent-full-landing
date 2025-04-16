@@ -41,7 +41,7 @@ const SmallBanner: React.FC<SmallBannerProps> = ({ banners, head }) => {
               <div className="w-full max-w-[400px] mx-auto flex justify-center items-center mb-4">
                 <img
                   style={{ width: '350px', height: '180px' }}
-                  src={`http://103.41.112.95:3000/images/${item.thumbnail}`}
+                  src={`${process.env.NEXT_PUBLIC_API_URL}/images/${item.thumbnail}`}
                   alt={item.title}
                   className="object-cover rounded-lg"
                 />

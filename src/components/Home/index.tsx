@@ -1,39 +1,31 @@
 import React, { useEffect, useState } from "react";
-import Hero from "./Hero";
-import Categories from "./Categories";
-import NewArrival from "./NewArrivals";
-import PromoBanner from "./PromoBanner";
-import BestSeller from "./BestSeller";
-import CounDown from "./Countdown";
-import Testimonials from "./Testimonials";
-import Newsletter from "../Common/Newsletter";
-import BrandsCoursel from "../BrandsCoursel";
+// import BestSeller from "./BestSeller";
+// import CounDown from "./Countdown";
+// import Testimonials from "./Testimonials";
+// import Newsletter from "../Common/Newsletter";
+// import BrandsCoursel from "../BrandsCoursel";
+// import Categories from "./Categories";
+// import NewArrival from "./NewArrivals";
+// import Hero from "./Hero";
+
+import { apiRequest } from "@/utils/api"; // ✅ Import API function
+
 import AutoCoursel from "../AutoCoursel";
+import PromoBanner from "./PromoBanner";
 
 const Home = () => {
   const [data, setData] = useState<string[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchSpecial = async () => {
-      try {
-        const response = await fetch(
-          "http://103.41.112.95:3000/v1/content/special-product"
-        );
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-        const result = await response.json();
-        console.log(result, "ss");
+  // useEffect(() => {
+  //   const fetchSpecial = async () => {
 
-        setData(result);
-      } catch (err) {
-        setError((err as Error).message);
-      }
-    };
+  //     const response = await apiRequest('content/special-product')
+  //     setData(response)
+  //   };
 
-    fetchSpecial();
-  }, []);
+  //   fetchSpecial();
+  // }, []);
   return (
     <main>
       <PromoBanner />

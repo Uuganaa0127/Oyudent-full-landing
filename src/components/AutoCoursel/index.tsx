@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
+import { apiRequest } from "@/utils/api";
+
 
 const AutoLogoSlider = () => {
   const [data, setData] = useState<{ result: { logo: string }[] } | null>(null);
@@ -11,28 +13,15 @@ const AutoLogoSlider = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchLogos = async () => {
-      try {
-        const response = await fetch(
-          'http://103.41.112.95:3000/v1/manufacturer?size=10&page=2'
-        );
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-        const result = await response.json();
-        console.log(result, 'ss');
-
-        setData(result);
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setLoading(false);
-      }
-    };
+ 
 
     fetchLogos();
   }, []);
-
+  const fetchLogos = async () => {
+    const response = await apiRequest(`manufacturer?size=10&page=0`)
+    setData(response)
+  setLoading(false)
+  };
   return (
     <div className="w-2/3 mx-auto  my-10">
       <p className="text-2xl font-extrabold mb-12 text-center">
@@ -58,7 +47,7 @@ const AutoLogoSlider = () => {
           {data?.result.map((logo: any, index) => (
             <SwiperSlide key={index}>
               <img
-                src={`http://103.41.112.95:3000/images/${logo.logo}`}
+                src={`${process.env.NEXT_PUBLIC_API_URL}/images/${logo.logo}`}
                 alt={`Logo ${index + 1}`}
                 className="w-[100px] h-[50px] md:w-[120px] md:h-[60px] lg:w-[150px] lg:h-[70px] mx-auto object-contain"
               />

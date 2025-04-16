@@ -11,7 +11,7 @@ const CourseItem = ({ blog }: { blog: BlogItem }) => {
         className="rounded-md overflow-hidden"
       >
         <img
-          src={`http://103.41.112.95:3000/images/${blog?.thumbnail}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/images/${blog?.thumbnail}`}
           className="rounded-md w-full object-cover"
           width="330"
           height="210"
