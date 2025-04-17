@@ -6,9 +6,21 @@ import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import { apiRequest } from "@/utils/api";
 
-
+type Partner = {
+  id: number;
+  name: string;
+  picture: string;
+  special: boolean;
+  deletedAt: string | null;
+  country: {
+    id: number;
+    name: string;
+    code: number;
+    deletedAt: string | null;
+  };
+};
 const AutoLogoSlider = () => {
-  const [data, setData] = useState<{ result: { logo: string }[] } | null>(null);
+  const [data, setData] = useState<Partner[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -18,8 +30,14 @@ const AutoLogoSlider = () => {
     fetchLogos();
   }, []);
   const fetchLogos = async () => {
-    const response = await apiRequest(`manufacturer?size=10&page=0`)
+    const response = await apiRequest(`content/partner`)
+    console.log(response,'re');
+
     setData(response)
+
+    if (data) {
+      console.log(data, 'updated');
+    }
   setLoading(false)
   };
   return (
@@ -44,15 +62,16 @@ const AutoLogoSlider = () => {
             1024: { slidesPerView: 6 },
           }}
         >
-          {data?.result.map((logo: any, index) => (
-            <SwiperSlide key={index}>
-              <img
-                src={`${process.env.NEXT_PUBLIC_API_URL}/images/${logo.logo}`}
-                alt={`Logo ${index + 1}`}
-                className="w-[100px] h-[50px] md:w-[120px] md:h-[60px] lg:w-[150px] lg:h-[70px] mx-auto object-contain"
-              />
-            </SwiperSlide>
-          ))}
+         {data?.map((partner, index) => (
+  <SwiperSlide key={index}>
+    <img
+      src={`${process.env.NEXT_PUBLIC_API_URL}/images/${partner.picture}`}
+      alt={partner.name}
+      className="w-[150px] h-[70px] bg-white rounded-xl p-2 object-contain mx-auto shadow"
+
+    />
+  </SwiperSlide>
+))}
         </Swiper>
       )}
     </div>

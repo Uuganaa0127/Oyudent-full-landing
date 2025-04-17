@@ -245,7 +245,7 @@ const Header = () => {
                     </p>
                   </div>
                 </Link>
-                <button
+                {/* <button
                   onClick={handleOpenCartModal}
                   className="flex items-center gap-2.5"
                 >
@@ -294,7 +294,7 @@ const Header = () => {
                       ${totalPrice}
                     </p>
                   </div>
-                </button>
+                </button> */}
                 </div>
                 
               )}
