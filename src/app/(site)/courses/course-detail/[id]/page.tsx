@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import { apiRequest } from "@/utils/api"; // ✅ Import API function
 
 interface Blog {
   id: number;
@@ -19,29 +20,19 @@ const CourseDetail = () => {
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+const getCourse = async ()=>{
 
+  const response = await apiRequest(`course/${id}`,"GET")
+  console.log(response,'res');
+    setBlog(response),
+    setLoading(false)
+
+}
   useEffect(() => {
     if (!id) return;
+    getCourse()
 
-    const fetchBlog = async () => {
-      try {
-        const response = await fetch(
-          `http://103.41.112.95:3000/v1/course/${id}`
-        );
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-
-        const result: Blog = await response.json();
-        setBlog(result);
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchBlog();
+ 
   }, [id]);
 
   if (loading) return <p>Loading...</p>;
@@ -54,7 +45,7 @@ const CourseDetail = () => {
 
       <div className="w-full h-72 relative mt-5 flex justify-center">
         <img
-          src={`http://103.41.112.95:3000/images/${blog.thumbnail}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/images/${blog.thumbnail}`}
           alt={blog.title}
           // layout="fill"
           // objectFit="cover"
@@ -66,6 +57,8 @@ const CourseDetail = () => {
         className="mt-6 text-lg text-gray-700 leading-relaxed"
         dangerouslySetInnerHTML={{ __html: blog.content }}
       />
+      <button className=" w-full rounded bg-grey shadow-xl text-center justify-center items-center flex">Бүртгүүлэх</button>
+
     </section>
   );
 };
