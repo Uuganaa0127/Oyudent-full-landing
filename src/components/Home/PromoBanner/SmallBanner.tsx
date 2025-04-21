@@ -38,20 +38,21 @@ const SmallBanner: React.FC<SmallBannerProps> = ({ banners, head }) => {
         {banners.map((item) => (
           <SwiperSlide key={item.id}>
             <div className="relative flex flex-col items-center justify-center text-center px-4 py-10 bg-[#DBF4F3]   rounded-lg shadow-xl hover:scale-105 transform transition-all duration-300 ease-in-out">
-              <div className="w-full max-w-[400px] mx-auto flex justify-center items-center mb-4">
-                <img
-                  style={{ width: '350px', height: '180px' }}
+            <div
+                className="w-[400px] h-[200px] mb-4 flex items-center justify-center rounded-lg overflow-hidden  border border-gray-200"
+              >
+              <img
                   src={`${process.env.NEXT_PUBLIC_API_URL}/images/${item.thumbnail}`}
                   alt={item.title}
-                  className="object-cover rounded-lg"
+                  className="w-full h-full object-cover"
                 />
               </div>
               <span className="block text-xl font-semibold text-teal-600 mb-3">
                 {item.title}
               </span>
-              {item.description && (
-                <p className="text-gray-700 text-sm mb-4">{item.description}</p>
-              )}
+              <div className="h-[60px] max-w-md mb-4 text-sm md:text-base text-gray-700 overflow-hidden">
+                <p className="line-clamp-3">{item.description || " "}</p>
+              </div>
               <a
                 href={
                   head === 'Мэдээ'
