@@ -14,7 +14,7 @@ export const apiRequest = async (
   requiresAuth: boolean = false
 ) => {
   try {
-    //  const token = getTokenFromCookie()
+     const token = getTokenFromCookie()
     // if (requiresAuth && !token) {
     //   console.warn("No token found. Authentication required.");
     //   return null;
@@ -24,7 +24,9 @@ export const apiRequest = async (
     const headers: Record<string, string> = {
 
       "Content-Type": "application/json",
+
       Authorization: `Bearer ${getTokenFromCookie()}` 
+
     };
     const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
       method,
@@ -34,7 +36,8 @@ export const apiRequest = async (
 
     if (response.status === 401) {
         // window.location.href = "/"; 
-        return null; // No content
+              throw new Error(`Error ${response.status}: ${response.statusText}`);
+
       }
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
@@ -148,7 +151,7 @@ export const getTokenFromCookie = () => {
       }, {} as Record<string, string>);
   
       if (cookies.auth_token) {
-        // console.log("Retrieved token from cookie:", cookies.auth_token);
+        console.log("Retrieved token from cookie:", cookies.auth_token);
         return cookies.auth_token;
       } else {
         // console.warn("No auth_token found in cookies.");

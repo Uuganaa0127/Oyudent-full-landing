@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+
+
 import { apiRequest } from "@/utils/api"; // ✅ Your API helper
 
-const La = L;
+
 
 export function sendTimeHr() {
   type AttendanceRecord = {
@@ -26,6 +26,7 @@ export function sendTimeHr() {
 
   useEffect(() => {
     getAccountData();
+    
     if (typeof window !== "undefined" && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -135,7 +136,7 @@ export function sendTimeHr() {
         </button>
       </div>
 
-      {attendance.length > 0 ? (
+      {attendance?.length > 0 ? (
         <div className="w-full max-w-lg border p-4 rounded shadow text-black">
           <h2 className="text-xl font-semibold mb-4 text-black">
             Your Attendance for Last Month

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 // import Newsletter from "../Common/Newsletter";
 // import BrandsCoursel from "../BrandsCoursel";
 // import Categories from "./Categories";
-// import NewArrival from "./NewArrivals";
+import NewArrival from "./NewArrivals";
 // import Hero from "./Hero";
 
 import { apiRequest } from "@/utils/api"; // ✅ Import API function
@@ -31,12 +31,14 @@ const Home = () => {
       <PromoBanner />
 
       {/* <CounDown /> */}
-      <AutoCoursel />
+      {/* <Categories/> */}
 
       {/* {data && <Hero data={data} />} */}
       {/* <BrandsCoursel/> */}
       {/* <Categories /> */}
-      {/* <NewArrival /> */}
+      <NewArrival />
+      <AutoCoursel />
+
       {/* <BestSeller /> */}
       {/* <Testimonials /> */}
       {/* <Newsletter /> */}
