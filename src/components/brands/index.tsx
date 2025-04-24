@@ -20,7 +20,9 @@ type Partner = {
 
 const Brands = () => {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<{ result: Partner[]; total: number } | null>(null);
+  const [data, setData] = useState<{ result: Partner[]; total: number } | null>(
+    null
+  );
 
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(9);
@@ -31,12 +33,17 @@ const Brands = () => {
   }, [page, size]);
 
   const fetchData = async () => {
-    setLoading(true)
-    const response = await apiRequest(`manufacturer?size=${size}&page=${page}`,"GET")
+    setLoading(true);
+    const response = await apiRequest(
+      `manufacturer?size=${size}&page=${page}`,
+      "GET"
+    );
     setData(response);
-    if(response) {setLoading(false)}
+    if (response) {
+      setLoading(false);
+    }
     setTotalPages(Math.ceil(response.total / size));
-  }
+  };
 
   const handlePrev = () => {
     if (page > 0) setPage(page - 1);
@@ -82,17 +89,17 @@ const Brands = () => {
             disabled={page === 0}
             className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 disabled:opacity-50 transition"
           >
-            Previous
+            Өмнөх
           </button>
           <span className="text-sm font-medium">
-            Page {page + 1} of {totalPages}
+            Хуудас {page + 1} of {totalPages}
           </span>
           <button
             onClick={handleNext}
             disabled={page + 1 >= totalPages}
             className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 disabled:opacity-50 transition"
           >
-            Next
+            Дараах
           </button>
         </div>
       </div>

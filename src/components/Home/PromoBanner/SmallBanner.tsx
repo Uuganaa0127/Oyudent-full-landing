@@ -1,8 +1,8 @@
-import React from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/pagination';
+import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
 
 export interface BannerItem {
   id: number;
@@ -37,11 +37,9 @@ const SmallBanner: React.FC<SmallBannerProps> = ({ banners, head }) => {
       >
         {banners.map((item) => (
           <SwiperSlide key={item.id}>
-            <div className="relative flex flex-col items-center justify-center text-center px-4 py-10 bg-[#DBF4F3]   rounded-lg shadow-xl hover:scale-105 transform transition-all duration-300 ease-in-out">
-            <div
-                className="w-[400px] h-[200px] mb-4 flex items-center justify-center rounded-lg overflow-hidden  border border-gray-200"
-              >
-              <img
+            <div className="relative flex flex-col items-center justify-center text-center px-4 py-10 bg-[#DBF4F3]   rounded-lg shadow-xl hover:scale-120 transform transition-all duration-300 ease-in-out">
+              <div className="w-[400px] h-[200px] mb-4 flex items-center justify-center rounded-lg overflow-hidden  border border-gray-200">
+                <img
                   src={`${process.env.NEXT_PUBLIC_API_URL}/images/${item.thumbnail}`}
                   alt={item.title}
                   className="w-full h-full object-cover"
@@ -55,7 +53,7 @@ const SmallBanner: React.FC<SmallBannerProps> = ({ banners, head }) => {
               </div>
               <a
                 href={
-                  head === 'Мэдээ'
+                  head === "Мэдээ"
                     ? `/blogs/blog-details/${item.id}`
                     : `/courses/course-detail/${item.id}`
                 }

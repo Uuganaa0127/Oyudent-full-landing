@@ -21,14 +21,14 @@ const HeadBanner = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [hasButton, setHasButton] = useState<boolean>(false); // ✅ Check if any slide has a button
-  const [data1,setData1]=useState<String|null>(null)
+  const [data1, setData1] = useState<String | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await apiRequest('banner',"GET")
-        setData(response)
-        setHasButton(response.some((item) => item.buttonText && item.buttonLink));
-        setLoading(false);
+      const response = await apiRequest("banner", "GET");
+      setData(response);
+      setHasButton(response.some((item) => item.buttonText && item.buttonLink));
+      setLoading(false);
     };
 
     fetchData();
@@ -56,7 +56,7 @@ const HeadBanner = () => {
         {data.map((item, index) => (
           <SwiperSlide key={index}>
             <div
-              className="relative flex flex-col items-center justify-center w-full h-[500px] sm:h-[600px] lg:h-[700px] rounded-3xl overflow-hidden bg-cover bg-center shadow-md"
+              className="relative flex flex-col items-center justify-center w-full h-[500px] sm:h-[600px] lg:h-[700px] rounded-3xl overflow-hidden bg-cover bg-center shadow-md mb-4"
               style={{
                 backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/images/${item.image})`,
               }}
@@ -76,8 +76,6 @@ const HeadBanner = () => {
                 >
                   {item.description}
                 </p>
-
-                {/* Button with Visibility Fix */}
                 {item.buttonText && item.buttonLink && (
                   <a
                     href={item.buttonLink}
@@ -91,8 +89,6 @@ const HeadBanner = () => {
           </SwiperSlide>
         ))}
       </Swiper>
-
-      {/* ✅ Floating Button Outside Carousel (if applicable) */}
       {hasButton && (
         <div className="mt-8 flex justify-center">
           <a
