@@ -43,7 +43,7 @@ const Signin = () => {
       if (data?.access_token) {
         storeToken(data.access_token);
         decodeToken(data.access_token);
-        // window.location.href = "my-account"
+        window.location.href = "my-account"
       }
     } catch (err) {
       console.error("Login error:", err);

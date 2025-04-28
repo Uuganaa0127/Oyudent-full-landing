@@ -11,7 +11,7 @@ const nextConfig = {
     //     ],
     //   },
       images: {
-        domains: ['103.41.112.95'], // Add your image source here
+        domains: ['103.50.205.73'], // Add your image source here
       },
 };
 

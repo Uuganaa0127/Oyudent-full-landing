@@ -100,38 +100,22 @@ function AccountDetails({ data }) {
           />
         </div>
 
-        {/* Country */}
-        <div className="mb-5">
-          <label className="block mb-2.5">Country/Region <span className="text-red">*</span></label>
-          <select
-            name="country"
-            value={form.country}
-            onChange={handleChange}
-            className="input"
-          >
-            <option value="0">Australia</option>
-            <option value="1">America</option>
-            <option value="2">England</option>
-          </select>
-        </div>
+{/* Office Name - Single Input Only */}
+<div className="mb-5">
+  <label className="block mb-2.5 text-sm font-medium text-gray-700">Office</label>
+  <input
+    type="text"
+    name="office"
+    value={office[0].office}
+    onChange={(e) => {
+      const { value } = e.target;
+      setOffice([{ office: value }]);
+    }}
+    placeholder="Enter your office name"
+    className="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition duration-150 ease-in-out"
+  />
+</div>
 
-        {/* Office Name */}
-        <div className="mb-5">
-          <label className="block mb-2.5">Office</label>
-          {office.map((item, index) => (
-  <div className="mb-5" key={index}>
-    <label className="block mb-2.5">Office {index + 1}</label>
-    <input
-      type="text"
-      name={`office-${index}`}
-      value={item.office}
-      onChange={(e) => handleOfficeChange(index, e)}
-      className="input"
-    />
-  </div>
-))}
-
-        </div>
 
         <button
           type="submit"
