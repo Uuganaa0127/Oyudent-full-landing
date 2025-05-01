@@ -23,6 +23,8 @@ const BlogDetails = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log('sda');
+    
     if (!id) return;
     fetchBlog();
   }, [id]);

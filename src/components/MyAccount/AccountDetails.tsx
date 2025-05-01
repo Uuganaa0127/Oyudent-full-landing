@@ -12,9 +12,11 @@ function AccountDetails({ data }) {
   });
 
   const [office, setOffice] = useState([{ office: "" }]);
-
-
+  const [selectedOfficeId, setSelectedOfficeId] = useState("");
+  const [officeData, setOfficeData] = useState([]); // Make it array
+  
   useEffect(() => {
+    GetOffices()
     if (data) {
       setForm({
         firstName: data.firstName || "",
@@ -44,17 +46,25 @@ function AccountDetails({ data }) {
       return updated;
     });
   };
-  
+  const GetOffices = async () => {
+    try {
+      const res = await apiRequest("office", "GET");
+      setOfficeData(res); // Assuming res is an array of office names or objects
+    } catch (err) {
+      console.error("Error fetching offices:", err);
+    }
+  };
   const handleSubmitProfile = async (e) => {
     e.preventDefault();
   
     const payload = {
-      offices: office, // Now it's [{ office: "..." }]
+      offices: [selectedOfficeId], // ✅ Send as string in array
     };
   
     const res = await apiRequest(`user/${data?.id}/office`, "PUT", payload);
     console.log("Saved:", res);
   };
+  
   
   const handleChangePassword = (e) => {
     e.preventDefault();
@@ -100,23 +110,24 @@ function AccountDetails({ data }) {
           />
         </div>
 
-{/* Office Name - Single Input Only */}
-<div className="mb-5">
-  <label className="block mb-2.5 text-sm font-medium text-gray-700">Office</label>
-  <input
-    type="text"
-    name="office"
-    value={office[0].office}
-    onChange={(e) => {
-      const { value } = e.target;
-      setOffice([{ office: value }]);
-    }}
-    placeholder="Enter your office name"
-    className="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition duration-150 ease-in-out"
-  />
+        <div className="mb-5">
+  <label className="block mb-2.5 text-sm font-medium text-gray-700">Select Office</label>
+  <select
+  name="office"
+  value={selectedOfficeId}
+  onChange={(e) => setSelectedOfficeId(e.target.value)}
+  className="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition duration-150 ease-in-out"
+>
+  <option value="">-- Select Office --</option>
+  {Array.isArray(officeData) &&
+    officeData.map((item) => (
+      <option key={item.id} value={item.id}>
+        {item.name || item.office} (ID: {item.id})
+      </option>
+    ))}
+</select>
+
 </div>
-
-
         <button
           type="submit"
           onClick={handleSubmitProfile}

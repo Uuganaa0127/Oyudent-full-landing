@@ -15,6 +15,8 @@ interface Blog {
 }
 
 const BlogDetail = () => {
+  console.log('sda');
+
   const { id } = useParams(); // ✅ Get ID from URL
 // console.log(id,'ss');
 // 
@@ -23,6 +25,8 @@ const BlogDetail = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log('sda');
+
     // if (!id) return;
     console.log(blog,'blog');
     

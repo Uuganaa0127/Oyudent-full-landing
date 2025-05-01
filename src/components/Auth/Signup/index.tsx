@@ -17,7 +17,7 @@ const Signup = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const [client,setClient]=useState(false);
+  // const [client,setClient]=useState(false);
   const [message, setMessage] = useState("");
 
   // ✅ Handle input changes
@@ -63,7 +63,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await signUpUser(formData,client);
+      const response = await signUpUser(formData);
       const x = response.json();
       console.log(x);
 
@@ -82,28 +82,7 @@ const Signup = () => {
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           <div className="max-w-[570px] w-full mx-auto rounded-xl bg-white shadow-1 p-4 sm:p-7.5 xl:p-11">
           <div className="flex gap-4">
-        <button
-          onClick={() => setClient(true)}
-          className={`w-full flex justify-center font-medium text-black py-3 px-6 rounded-lg transition-all duration-300 
-      ${
-        client
-          ? "bg-blue-600 shadow-lg scale-105"
-          : "bg-gray-500 hover:bg-blue-500"
-      }`}
-        >
-        User
-        </button>
-        <button
-          onClick={() => setClient(false)}
-          className={`w-full flex justify-center font-medium text-black py-3 px-6 rounded-lg transition-all duration-300 
-      ${
-        !client
-          ? "bg-blue-600 shadow-lg scale-105"
-          : "bg-gray-500 hover:bg-blue-500"
-      }`}
-        >
-     Client
-        </button>
+      
       </div>
 
             <div className="mt-5.5">
@@ -139,7 +118,8 @@ const Signup = () => {
                     className="rounded-lg border border-gray-3 bg-gray-1 w-full py-3 px-5 outline-none duration-200 focus:ring-2 focus:ring-blue/20"
                   />
                 </div>
-{client?  <div className="mb-5">
+
+ <div className="mb-5">
                   <label htmlFor="register" className="block mb-2.5">
                     Регистер <span className="text-red">*</span>
                   </label>
@@ -153,7 +133,7 @@ const Signup = () => {
                     required
                     className="rounded-lg border border-gray-3 bg-gray-1 w-full py-3 px-5 outline-none duration-200 focus:ring-2 focus:ring-blue/20"
                   />
-                </div>:<></>}
+                </div>
                
 
                 <div className="mb-5">

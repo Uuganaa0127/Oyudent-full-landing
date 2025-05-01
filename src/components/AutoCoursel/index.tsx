@@ -20,6 +20,7 @@ type Partner = {
   };
 };
 const AutoLogoSlider = () => {
+
   const [data, setData] = useState<Partner[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);

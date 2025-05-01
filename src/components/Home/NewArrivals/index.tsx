@@ -1,10 +1,38 @@
-import React from "react";
+"use client";
+
+import { useEffect, useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
 import ProductItem from "@/components/Common/ProductItem";
 import shopData from "@/components/Shop/shopData";
+import { apiRequest } from "@/utils/api";
 
 const NewArrival = () => {
+
+  const [data, setData] = useState<any[]>([]);
+
+
+useEffect(() => {
+  
+
+
+  getData();
+
+}, []);
+
+
+const getData = async () => {
+  try {
+    const response = await apiRequest(`content/special-product`, "GET");
+    setData(response);
+    console.log(data);
+    
+
+  } catch (err: any) {
+    console.error("Failed to fetch blog:", err);
+  }
+};
   return (
     <section className="overflow-hidden pt-15">
       <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
@@ -31,24 +59,24 @@ const NewArrival = () => {
                   strokeLinecap="round"
                 />
               </svg>
-              This Week’s
+            Долоо хоногийн
             </span>
             <h2 className="font-semibold text-xl xl:text-heading-5 text-dark">
-              New Arrivals
+             Шинэ бүтээгдэхүүнүүд
             </h2>
           </div>
 
-          <Link
+          {/* <Link
             href="/shop-with-sidebar"
             className="inline-flex font-medium text-custom-sm py-2.5 px-7 rounded-md border-gray-3 border bg-gray-1 text-dark ease-out duration-200 hover:bg-dark hover:text-white hover:border-transparent"
           >
             View All
-          </Link>
+          </Link> */}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-7.5 gap-y-9">
           {/* <!-- New Arrivals item --> */}
-          {shopData.map((item, key) => (
+          {data.map((item, key) => (
             <ProductItem item={item} key={key} />
           ))}
         </div>

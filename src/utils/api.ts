@@ -93,19 +93,16 @@ export const signUpUser = async (userData: {
   password: string;
   passwordMatch: string;
   register: string;
-},a:boolean) => {
+},) => {
   try {
     if (userData.password !== userData.passwordMatch) {
       throw new Error("Passwords do not match.");
     }
 
     let response;
-
-    if (!a === true) {
-      response = await apiRequest("auth/register/", "POST", userData);
-    } else {
+ 
       response = await apiRequest("auth/register/client", "POST", userData);
-    }
+    
 
     return response;
   } catch (error) {
