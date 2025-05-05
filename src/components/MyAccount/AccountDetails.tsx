@@ -51,6 +51,8 @@ function AccountDetails({ data }) {
       const res = await apiRequest("office", "GET");
       setOfficeData(res); // Assuming res is an array of office names or objects
     } catch (err) {
+      console.log(err,'pizda');
+      
       console.error("Error fetching offices:", err);
     }
   };
@@ -81,7 +83,7 @@ function AccountDetails({ data }) {
             <input
               type="text"
               name="firstName"
-              value={form.firstName}
+              value={form.firstName || ""}
               onChange={handleChange}
               className="input"
             />
@@ -91,7 +93,7 @@ function AccountDetails({ data }) {
             <input
               type="text"
               name="lastName"
-              value={form.lastName}
+              value={form.lastName || ""}
               onChange={handleChange}
               className="input"
             />
@@ -102,12 +104,13 @@ function AccountDetails({ data }) {
         <div className="mb-5">
           <label className="block mb-2.5">ID <span className="text-red">*</span></label>
           <input
-            type="text"
-            name="id"
-            value={data.id}
-            disabled
-            className="input bg-gray-200 cursor-not-allowed"
-          />
+  type="text"
+  name="id"
+  value={data?.id ?? ""}
+  readOnly
+  className="input bg-gray-200 cursor-not-allowed"
+/>
+
         </div>
 
         <div className="mb-5">

@@ -44,26 +44,27 @@ const ProductItem = ({ item }: { item: Product }) => {
   const handleProductDetails = () => {
     dispatch(updateproductDetails({ ...item }));
   };
+  const imageSrc =
+  item.picture?.trim()
+    ? `${process.env.NEXT_PUBLIC_API_URL || ""}/images/${item.picture}`
+    : "/images/placeholder.png";
 
   return (
     <div className="group">
       {/* Product Image */}
       <div className="relative overflow-hidden flex items-center justify-center rounded-lg bg-[#F6F7FB] min-h-[270px] mb-4">
       <div className="relative w-full h-[250px] flex items-center justify-center rounded-lg bg-[#F6F7FB] mb-4 overflow-hidden">
-  <Image
-    src={
-      item.picture
-        ? `${process.env.NEXT_PUBLIC_API_URL}/images/${item.picture}`
-        : "/images/placeholder.png"
-    }
-    alt={item.title}
-    fill
-    className="object-contain p-6" // or use object-cover if needed
-    sizes="(max-width: 768px) 100vw, 25vw"
-  />
+      <Image
+  src={imageSrc}
+  alt={item.title || "Product image"}
+  fill
+  className="object-contain p-6"
+  sizes="(max-width: 768px) 100vw, 25vw"
+  unoptimized
+/>
 </div>
         {/* Hover Buttons */}
-        {/* <div className="absolute left-0 bottom-0 translate-y-full w-full flex items-center justify-center gap-2.5 pb-5 ease-linear duration-200 group-hover:translate-y-0">
+        <div className="absolute left-0 bottom-0 translate-y-full w-full flex items-center justify-center gap-2.5 pb-5 ease-linear duration-200 group-hover:translate-y-0">
           <button
             onClick={() => {
               openModal();
@@ -75,7 +76,7 @@ const ProductItem = ({ item }: { item: Product }) => {
             🔍
           </button>
 
-          <button
+          {/* <button
             onClick={handleAddToCart}
             className="inline-flex font-medium text-custom-sm py-[7px] px-5 rounded-[5px] bg-blue text-white hover:bg-blue-dark"
           >
@@ -88,12 +89,12 @@ const ProductItem = ({ item }: { item: Product }) => {
             className="flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 text-dark bg-white hover:text-blue"
           >
             ❤️
-          </button>
-        </div> */}
+          </button> */}
+        </div>
       </div>
 
       {/* Star Ratings */}
-      <div className="flex items-center gap-2.5 mb-1">
+      {/* <div className="flex items-center gap-2.5 mb-1">
         <div className="flex gap-1">
           {[...Array(5)].map((_, i) => (
             <Image
@@ -106,7 +107,7 @@ const ProductItem = ({ item }: { item: Product }) => {
           ))}
         </div>
         <p className="text-custom-sm">({item.reviews})</p>
-      </div>
+      </div> */}
 
       {/* Country Info */}
       {item.country?.name && (
@@ -123,8 +124,8 @@ const ProductItem = ({ item }: { item: Product }) => {
 
       {/* Price */}
       <span className="flex items-center gap-2 font-medium text-lg">
-        <span className="text-dark">${item.discountedPrice}</span>
-        <span className="text-dark-4 line-through">${item.price}</span>
+        {/* <span className="text-dark">${item.discountedPrice}</span> */}
+        {/* <span className="text-dark-4 line-through">${item.price}</span> */}
       </span>
     </div>
   );
