@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { apiRequest } from "@/utils/api";
-
+import {  usePopup } from "@/app/context/PopupContext"
 type AttendanceRecord = {
   id: string;
   createdAt: string;
@@ -18,25 +18,60 @@ export default function SendTimeHr() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [popupMessage, setPopupMessage] = useState("");
-  const [popupType, setPopupType] = useState<"success" | "error" | "">("");
   const [openMonths, setOpenMonths] = useState<Record<string, boolean>>({});
+
+  const { show, showMessage } = usePopup();
+
+
 
   useEffect(() => {
     fetchAttendance();
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setLocation({ latitude, longitude });
-        },
-        (err) => {
-          console.error("❌ Geolocation error:", err);
-        }
-      );
-    }
-  }, []);
 
+    checkGeolocationPermission();
+  }, []);
+  
+  const checkGeolocationPermission = async () => {
+    if (!navigator.permissions || !navigator.geolocation) {
+      console.warn("Geolocation or Permissions API not supported.");
+      return;
+    }
+  
+    try {
+      const status = await navigator.permissions.query({ name: "geolocation" as PermissionName });
+      if (status.state === "granted") {
+        getUserLocation(); // already allowed
+      } else if (status.state === "prompt") {
+        getUserLocation(); // will ask
+      } else if (status.state === "denied") {
+        showMessage("❌ Location not available", "error");
+
+
+      }
+  
+      // Optional: Listen for changes
+      status.onchange = () => {
+        if (status.state === "granted") getUserLocation();
+      };
+    } catch (err) {
+      console.error("Permission check failed:", err);
+    }
+  };
+  
+  const getUserLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setLocation({ latitude, longitude });
+      },
+      (err) => {
+        console.error("Geolocation error:", err);
+        showMessage("❌ Location access denied.Please allow it in settings.", "error");
+
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  };
+  
   const fetchAttendance = async () => {
     try {
       const data = await apiRequest("timesheet", "GET");
@@ -45,30 +80,31 @@ export default function SendTimeHr() {
       console.error("Error fetching attendance:", error);
     }
   };
-
   const submitTime = async (type: "in" | "out") => {
-    if (isSubmitting || !location.latitude || !location.longitude) return;
+    if (isSubmitting) return;
+  
+    if (location.latitude === null || location.longitude === null) {
+      show("❌ Location not available. Please allow location access.", "error");
+      return;
+    }
+  
     setIsSubmitting(true);
-
+  
     const formData = { lat: location.latitude, long: location.longitude, type };
-
+  
     try {
       await apiRequest("timesheet", "POST", formData);
-      setPopupType("success");
-      setPopupMessage(`🟢 Time ${type.toUpperCase()} submitted successfully!`);
+      show(`🟢 Time ${type.toUpperCase()} submitted successfully!`, "success");
       fetchAttendance();
     } catch (error) {
-      setPopupType("error");
-      setPopupMessage(`❌ Failed to submit Time ${type.toUpperCase()}.`);
+      show(`❌ Failed to submit Time ${type.toUpperCase()}.`, "error");
       console.error(error);
     } finally {
       setIsSubmitting(false);
-      setTimeout(() => {
-        setPopupMessage("");
-        setPopupType("");
-      }, 3000);
     }
   };
+  
+  
 
   const openPopup = (date: string) => {
     setSelectedDate(date);
@@ -198,18 +234,6 @@ export default function SendTimeHr() {
         </div>
       )}
 
-      {/* Global Success/Error Notification */}
-      {popupMessage && (
-        <div className="fixed bottom-4 right-4 flex items-center justify-center z-50">
-          <div
-            className={`px-6 py-3 rounded-lg text-grey font-semibold shadow-lg ${
-              popupType === "success" ? "bg-green-500" : "bg-red-500"
-            }`}
-          >
-            {popupMessage}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

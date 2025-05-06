@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { apiRequest, storeToken, getTokenFromCookie ,signIn} from "@/utils/api"; // ✅ Import API functions
 
+import {  usePopup } from "@/app/context/PopupContext"
+
 type DecodedToken = {
   exp: number;
   iat: number;
@@ -12,9 +14,9 @@ type DecodedToken = {
 };
 
 const Signin = () => {
+  const { show, showMessage } = usePopup();
   const [formData, setFormData] = useState({ username: "", password: "" });
-  const [test, setTest] = useState<DecodedToken | null>(null);
-  const [userRole, setUserRole] = useState<boolean | null>(true);
+  // const [test, setTest] = useState<DecodedToken | null>(null);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -23,12 +25,6 @@ const Signin = () => {
   useEffect(() => {
     const fetchToken = async () => {
       try {
-        // ✅ Get token from cookies
-        const token = getTokenFromCookie();
-
-        if (token) {
-          decodeToken(token); // ✅ Decode if token exists
-        }
       } catch (error) {
         console.error("Error fetching token:", error);
       }
@@ -37,19 +33,24 @@ const Signin = () => {
     fetchToken();
   }, []);
 
-  const login = async(a:boolean)=>{
-    try { 
-      const data = await signIn(formData,a)
+  const login = async () => {
+    try {
+      const data = await signIn(formData);
+  
       if (data?.access_token) {
         storeToken(data.access_token);
-        decodeToken(data.access_token);
-        window.location.href = "my-account"
+        window.location.href = "my-account";
+      } else if (data?.error) {
+        showMessage("Нэвтрэхэд алдаа гарлаа: " + data.error, "error");
+      } else {
+        showMessage("Алдаа гарлаа. Дахин оролдоно уу.", "error");
       }
-    } catch (err) {
+    } catch (err: any) {
+      showMessage("Сервертэй холбогдож чадсангүй.", "error");
       console.error("Login error:", err);
     }
-    
   };
+  
   
   // ✅ Updated Admin Login API
   // const checkLoginA = async () => {
@@ -81,43 +82,20 @@ const Signin = () => {
   // };
 
   // ✅ Decode Token
-  const decodeToken = (token: string) => {
-    try {
-      const decoded: DecodedToken = jwtDecode(token);
-      setTest(decoded);
-      setUserRole(decoded.roles.includes("admin") ? true : false);
-    } catch (error) {
-      console.error("Invalid Token", error);
-    }
-  };
+  // const decodeToken = (token: string) => {
+  //   try {
+  //     const decoded: DecodedToken = jwtDecode(token);
+  //     setTest(decoded);
+  //     setUserRole(decoded.roles.includes("admin") ? true : false);
+  //   } catch (error) {
+  //     console.error("Invalid Token", error);
+  //   }
+  // };
 
   return (
     <>
       {/* ✅ Your existing design & logic remain unchanged */}
-      <div className="flex gap-4">
-        <button
-          onClick={() => setUserRole(true)}
-          className={`w-full flex justify-center font-medium text-black py-3 px-6 rounded-lg transition-all duration-300 
-      ${
-        userRole
-          ? "bg-blue-600 shadow-lg scale-105"
-          : "bg-gray-500 hover:bg-blue-500"
-      }`}
-        >
-          Admin нэвтрэх
-        </button>
-        <button
-          onClick={() => setUserRole(false)}
-          className={`w-full flex justify-center font-medium text-black py-3 px-6 rounded-lg transition-all duration-300 
-      ${
-        !userRole
-          ? "bg-blue-600 shadow-lg scale-105"
-          : "bg-gray-500 hover:bg-blue-500"
-      }`}
-        >
-          Хэрэглэгчээр нэвтрэх
-        </button>
-      </div>
+ 
 
       <section className="overflow-hidden py-20 bg-gray-2">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
@@ -133,8 +111,7 @@ const Signin = () => {
               <form
                 onSubmit={(event) => {
                   event.preventDefault();
-                  login(userRole);
-                  // userRole ? checkLoginA() : checkLoginC();
+                  login();
                 }}
               >
                 <div className="mb-5">
@@ -172,7 +149,7 @@ const Signin = () => {
                   type="submit"
                   className="w-full flex justify-center font-medium text-white bg-dark py-3 px-6 rounded-lg ease-out duration-200 hover:bg-blue mt-7.5"
                 >
-                  {userRole ? "Админаар нэвтрэх" : "Хэрэглэгчээр нэвтрэх"}
+                   Нэвтрэх
                 </button>
               </form>
 
@@ -183,7 +160,7 @@ const Signin = () => {
                 Get Token from Cookies
               </button>
 
-              {test && (
+              {/* {test && (
                 <div className="bg-gray-100 p-4 rounded-lg mt-5">
                   <h2 className="text-lg font-semibold">
                     Welcome, User {test.sub}
@@ -200,7 +177,7 @@ const Signin = () => {
                 <p className="text-center mt-5 text-gray-500">
                   Нэвтрэлт амжилтгүй
                 </p>
-              )}
+              )} */}
             </div>
           </div>
         </div>

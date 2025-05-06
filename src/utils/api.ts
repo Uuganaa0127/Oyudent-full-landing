@@ -29,10 +29,10 @@ export const getTokenFromCookie = () => {
 };
 
 const redirectToHome = () => {
+  
   document.cookie = "auth_token=; Path=/; Max-Age=0"; // delete cookie
   window.location.href = "/";
 };
-
 export const apiRequest = async (
   endpoint: string,
   method: "GET" | "POST" | "PUT" | "DELETE" = "GET",
@@ -42,13 +42,10 @@ export const apiRequest = async (
   try {
     const token = getTokenFromCookie();
 
-    // 🔐 Auth check
-    if (requiresAuth) {
-      if (!token || isTokenExpired(token)) {
-        console.warn("No valid token. Redirecting...");
-        redirectToHome();
-        return null;
-      }
+    if (requiresAuth && (!token || isTokenExpired(token))) {
+      console.warn("No valid token. Redirecting...");
+      redirectToHome();
+      return null;
     }
 
     const headers: Record<string, string> = {
@@ -62,29 +59,28 @@ export const apiRequest = async (
       body: body ? JSON.stringify(body) : undefined,
     });
 
-    if (response.status === 401) {
-      console.warn("Received 401. Redirecting...");
-      redirectToHome();
-      return null;
-    }
+    const contentType = response.headers.get("Content-Type");
+    const isJSON = contentType?.includes("application/json");
+
+    const data = isJSON ? await response.json() : await response.text();
 
     if (!response.ok) {
-      throw new Error(`Error ${response.status}: ${response.statusText}`);
+      // Handle 401 for protected routes
+      if (response.status === 401 && requiresAuth) {
+        console.warn("401 Unauthorized. Redirecting...");
+        redirectToHome();
+        return null;
+      }
+
+      // Return structured error
+      throw { status: response.status, data };
     }
 
-    if (response.status === 204) {
-      return null; // No content
-    }
-
-    const contentType = response.headers.get("Content-Type");
-    if (!contentType || !contentType.includes("application/json")) {
-      const text = await response.text();
-      return text || null;
-    }
-
-    return await response.json();
-  } catch (error) {
+    return data || null;
+  } catch (error: any) {
     console.error(`API Error [${method} ${endpoint}]:`, error);
+    // Re-throw structured errors for `signIn` or others to handle
+    if (error?.data) return error.data;
     throw error;
   }
 };
@@ -104,19 +100,27 @@ export const storeToken = (token: string) => {
 
 // Auth
 export const signIn = async (
-  userData: { username: string; password: string },
-  a: boolean
+  userData: { username: string; password: string }
 ) => {
   try {
-    const endpoint = a ? "auth/login" : "auth/login/client";
+    // const endpoint = "auth/login/client";
+    const endpoint = "auth/login";
+
     const response = await apiRequest(endpoint, "POST", userData);
-    if (a && response) {
-      window.location.href = "my-account";
+
+    if (response?.access_token) {
+      return response;
     }
-    return response;
-  } catch (error) {
+
+    // Handle backend error response format
+    if (response?.message) {
+      return { error: response.message };
+    }
+
+    return { error: "Нэвтрэх үед тодорхойгүй алдаа гарлаа." };
+  } catch (error: any) {
     console.error("Sign-in Error:", error);
-    throw error;
+    return { error: error?.message || "Сервертэй холбогдож чадсангүй." };
   }
 };
 

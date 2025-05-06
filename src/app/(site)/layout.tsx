@@ -15,6 +15,7 @@ import PreviewSliderModal from "@/components/Common/PreviewSlider";
 
 import ScrollToTop from "@/components/Common/ScrollToTop";
 import PreLoader from "@/components/Common/PreLoader";
+import { PopupProvider } from "../context/PopupContext";
 
 export default function RootLayout({
   children,
@@ -35,8 +36,12 @@ export default function RootLayout({
         ) : (
           <>
             <ReduxProvider>
+              <PopupProvider>
+
               <CartModalProvider>
+
                 <ModalProvider>
+                  
                   <PreviewSliderProvider>
                     <Header />
                     {children}
@@ -44,9 +49,13 @@ export default function RootLayout({
                     <QuickViewModal />
                     <CartSidebarModal />
                     <PreviewSliderModal />
+
                   </PreviewSliderProvider>
                 </ModalProvider>
+
               </CartModalProvider>
+              </PopupProvider>
+
             </ReduxProvider>
             <ScrollToTop />
             <Footer />

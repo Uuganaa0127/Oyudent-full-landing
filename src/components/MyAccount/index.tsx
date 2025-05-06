@@ -3,6 +3,7 @@ import React, { useState,useEffect } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
 // import Image from "next/image";
 import AddressModal from "./AddressModal";
+import {jwtDecode } from "jwt-decode";
 // import Orders from "../Orders";
 import SendHrTime from "./sendTimeHr"
 import { apiRequest } from "@/utils/api"; // ✅ Import API function
@@ -14,7 +15,7 @@ const MyAccount = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [data1, setData] = useState<{ firstName?: string; lastName?: string; position?: string }>({});
 
-  
+  const [hasRoles, setHasRoles] = useState(true); // default 
   const [addressModal, setAddressModal] = useState(false);
 
   const openAddressModal = () => {
@@ -39,9 +40,27 @@ const MyAccount = () => {
   }
   };
 
+  const checkTokenRoles = () => {
+    const token = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("auth_token="))
+      ?.split("=")[1];
+
+    if (token) {
+      try {
+        const decoded: any = jwtDecode(token);
+        if (decoded.roles && decoded.roles.length === 0) {
+          setHasRoles(true);
+        }
+      } catch (err) {
+        console.error("Invalid token:", err);
+        setHasRoles(false);
+      }
+    }
+  };
 
   useEffect(() => {
-
+    checkTokenRoles();
     getMyProfile();
 
   },[])
@@ -170,7 +189,7 @@ const MyAccount = () => {
                       </svg>
                       Orders
                     </button> */}
-
+{hasRoles?
                     <button
                       onClick={() => setActiveTab("downloads")}
                       className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${
@@ -198,7 +217,7 @@ const MyAccount = () => {
                       </svg>
                      Цаг Бүртгэл
                     </button>
-
+:''}
                     <button
                       onClick={() => setActiveTab("addresses")}
                       className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${
@@ -324,7 +343,9 @@ const MyAccount = () => {
                 activeTab === "downloads" ? "block" : "hidden"
               }`}
             >
+              {hasRoles? 
               <SendHrTime />
+            :''}
               {/* <p>You don&apos;t have any download</p> */}
             </div>
             {/* <!-- downloads tab content end -->
