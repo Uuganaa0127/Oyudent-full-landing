@@ -98,13 +98,12 @@ if(response.status == 201){
 
       {/* Course Thumbnail */}
       <div className="relative w-full h-[400px] rounded-2xl overflow-hidden mb-10 shadow-lg">
-        <Image
-          src={`${process.env.NEXT_PUBLIC_API_URL}/images/${course.thumbnail}`}
+        <img
+          src={`${process.env.NEXT_PUBLIC_API_URL}/images/${course?.thumbnail}`}
           alt={course.title}
-          fill
           className="object-cover"
           sizes="(max-width: 768px) 100vw, 1024px"
-          priority
+          
         />
       </div>
 

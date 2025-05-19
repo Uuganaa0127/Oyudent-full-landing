@@ -30,7 +30,7 @@ const ProductItem = ({ item }: { item: Product }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleQuickViewUpdate = () => {
-    dispatch(updateQuickView({ ...item }));
+    // dispatch(updateQuickView({ ...item }));
   };
 
   // const handleAddToCart = () => {
@@ -119,7 +119,7 @@ const ProductItem = ({ item }: { item: Product }) => {
         className="font-medium text-dark hover:text-blue mb-1.5 cursor-pointer"
         onClick={handleProductDetails}
       >
-        <Link href="/shop-details">{item.title}</Link>
+        {/* <Link href="/shop-details">{item.title}</Link> */}
       </h3>
 
       {/* Price */}
